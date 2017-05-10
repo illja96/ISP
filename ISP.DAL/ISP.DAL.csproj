@@ -84,7 +84,6 @@
     <Compile Include="DBModels\User.cs" />
     <Compile Include="DBModels\UserBalanceLog.cs" />
     <Compile Include="ISPContext.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

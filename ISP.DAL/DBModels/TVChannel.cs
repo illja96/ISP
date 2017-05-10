@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -28,6 +29,10 @@ namespace ISP.DAL.DBModels
         [Range(0, double.MaxValue)]
         [Display(Name = "Стоимость в розницу")]
         public double Price { get; set; }
+
+        [DefaultValue(false)]
+        [Display(Name = "Аннулирован?")]
+        public bool IsCanceled { get; set; }
 
         [Display(Name = "Пакеты каналов")]
         public virtual ICollection<TVChannelPackage> Packages { get; set; }

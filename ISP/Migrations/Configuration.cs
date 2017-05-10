@@ -1,6 +1,9 @@
 namespace ISP.Migrations
 {
     using ISP.DAL;
+    using ISP.DAL.DBModels;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -10,23 +13,45 @@ namespace ISP.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(ISPContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            SeedUsersAndRoles(context);
+        }
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+        private void SeedUsersAndRoles(ISPContext context)
+        {
+            var RoleStore = new RoleStore<IdentityRole>(context);
+            var RoleManager = new RoleManager<IdentityRole>(RoleStore);
+
+            var AdminRole = new IdentityRole { Name = "Administrator" };
+            RoleManager.Create(AdminRole);
+
+            var SupportRole = new IdentityRole { Name = "Support" };
+            RoleManager.Create(SupportRole);
+
+            var UserRole = new IdentityRole { Name = "Subscriber" };
+            RoleManager.Create(UserRole);
+
+            var UserStore = new UserStore<User>(context);
+            var UserManager = new UserManager<User>(UserStore);
+            var User = new User
+            {
+                UserName = "root",
+                Email = "root@localhost.localhost",
+                PhoneNumber = "+380000000000",
+                FirstName = "root",
+                LastName = "root",
+                Balance = 0,
+                DoB = DateTime.UtcNow.Date,
+                RegistrationDate = DateTime.UtcNow
+            };
+            UserManager.Create(User, "rootroot");
+            UserManager.AddToRole(User.Id, "Administrator");
+
+            context.SaveChanges();
         }
     }
 }

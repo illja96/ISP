@@ -40,5 +40,9 @@ namespace ISP.DAL.DBModels
         [Range(0, double.MaxValue)]
         [Display(Name = "Стоимость в месяц")]
         public double Price { get; set; }
+
+        [DefaultValue(false)]
+        [Display(Name = "Аннулирован?")]
+        public bool IsCanceled { get; set; }
     }
 }

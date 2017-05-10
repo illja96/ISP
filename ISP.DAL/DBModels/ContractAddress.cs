@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,10 @@ namespace ISP.DAL.DBModels
     {
         [Key]
         public Guid Id { get; set; }
+
+        [Required]
+        [ForeignKey("Subscriber")]
+        public string SubscriberId { get; set; }
 
         [Required]
         [Display(Name = "Область")]
@@ -38,7 +43,7 @@ namespace ISP.DAL.DBModels
         public int ZIP { get; set; }
 
         [Display(Name = "Абоненты")]
-        public virtual ICollection<User> Subscribers { get; set; }
+        public virtual User Subscriber { get; set; }
 
         [Display(Name = "Контракты на каналы")]
         public virtual ICollection<TVChannelContract> TVChannelContracts { get; set; }

@@ -24,14 +24,14 @@ namespace ISP.DAL.DBModels
 
         [Required]
         [ForeignKey("Subscriber")]
-        public Guid SubscriberId { get; set; }
+        public string SubscriberId { get; set; }
         
         [Required]
         [ForeignKey("Address")]
         public Guid ContractAddressId { get; set; }
 
         [Required]
-        [ForeignKey("ChannelPackage")]
+        [ForeignKey("TVChannelPackage")]
         public Guid ChannelPackageId { get; set; }
 
         [Required]

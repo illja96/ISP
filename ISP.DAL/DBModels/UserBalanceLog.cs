@@ -14,7 +14,7 @@ namespace ISP.DAL.DBModels
         public Guid Id { get; set; }
 
         [ForeignKey("Subscriber")]
-        public Guid SubscriberId { get; set; }
+        public string SubscriberId { get; set; }
 
         [Required]
         [Display(Name = "Сумма")]
