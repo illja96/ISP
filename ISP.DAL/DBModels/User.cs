@@ -41,6 +41,11 @@ namespace ISP.DAL.DBModels
         [Display(Name = "Дата рождения")]
         public DateTime DoB { get; set; }
 
+        [Required]
+        [DataType(DataType.Date)]
+        [Display(Name = "Дата регистрации")]
+        public DateTime RegistrationDate { get; set; }
+
         [Display(Name = "Операции с балансом")]
         public virtual ICollection<UserBalanceLog> BalanceLog { get; set; }
 
