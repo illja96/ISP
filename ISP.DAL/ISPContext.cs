@@ -12,17 +12,16 @@ namespace ISP.DAL
 {
     public class ISPContext : IdentityDbContext<User>
     {
-        public new DbSet<User> Users;
-        public DbSet<UserBalanceLog> UserBalanceLog;
+        public DbSet<UserBalanceLog> UserBalanceLog { get; set; }
 
-        public DbSet<TVChannel> TVChannels;
-        public DbSet<TVChannelContract> TVChannelContracts;
+        public DbSet<TVChannel> TVChannels { get; set; }
+        public DbSet<TVChannelContract> TVChannelContracts { get; set; }
 
-        public DbSet<TVChannelPackage> TVChannelPackages;
-        public DbSet<TVChannelPackageContract> TVChannelPackageContracts;
+        public DbSet<TVChannelPackage> TVChannelPackages { get; set; }
+        public DbSet<TVChannelPackageContract> TVChannelPackageContracts { get; set; }
 
-        public DbSet<InternetPackage> InternetPackages;
-        public DbSet<InternetPackageContract> InternetPackageContracts;
+        public DbSet<InternetPackage> InternetPackages { get; set; }
+        public DbSet<InternetPackageContract> InternetPackageContracts { get; set; }
 
         public ISPContext() : base("DefaultConnection", throwIfV1Schema: false) { }
 

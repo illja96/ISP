@@ -46,5 +46,7 @@ namespace ISP.DAL.DBModels
 
         [Display(Name = "Пакет интернет услуг")]
         public virtual InternetPackage InternetPackage { get; set; }
+
+        public InternetPackageContract() { this.Id = Guid.NewGuid(); }
     }
 }

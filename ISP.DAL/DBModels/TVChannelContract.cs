@@ -47,5 +47,7 @@ namespace ISP.DAL.DBModels
 
         [Display(Name = "Канал")]
         public virtual TVChannel TVChannel { get; set; }
+
+        public TVChannelContract() { this.Id = Guid.NewGuid(); }
     }
 }

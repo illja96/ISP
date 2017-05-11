@@ -1,0 +1,51 @@
+﻿@model ISP.DAL.ViewModels.TVChannelDetails
+
+<div class="modal fade" id="modelDetails" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Подробности канала "@Model.Name"</h4>
+            </div>
+            <div class="modal-body">
+                <dl class="dl-horizontal">
+                    <dt>@Html.LabelFor(model => model.Name)</dt>
+                    <dd>@Html.DisplayFor(model => model.Name)</dd>
+
+                    <dt>@Html.LabelFor(model => model.IsIPTV)</dt>
+                    <dd>@Html.DisplayFor(model => model.IsIPTV)</dd>
+
+                    <dt>@Html.LabelFor(model => model.IsTV)</dt>
+                    <dd>@Html.DisplayFor(model => model.IsTV)</dd>
+
+                    <dt>@Html.LabelFor(model => model.Price)</dt>
+                    <dd>@Html.DisplayFor(model => model.Price)</dd>
+
+                    <dt>@Html.LabelFor(model => model.IsCanceled)</dt>
+                    <dd>@Html.DisplayFor(model => model.IsCanceled)</dd>
+
+                    <dt>@Html.LabelFor(model => model.Contracts)</dt>
+                    <dd>@Html.DisplayFor(model => model.Contracts)</dd>
+
+                    <dt>@Html.LabelFor(model => model.ContractsCanceled)</dt>
+                    <dd>@Html.DisplayFor(model => model.ContractsCanceled)</dd>
+
+                    <dt>@Html.LabelFor(model => model.ContractsTotal)</dt>
+                    <dd>@Html.DisplayFor(model => model.ContractsTotal)</dd>
+
+                    <dt>@Html.LabelFor(model => model.Packages)</dt>
+                    <dd>@Html.DisplayFor(model => model.Packages)</dd>
+
+                    <dt>@Html.LabelFor(model => model.ContractsInPackage)</dt>
+                    <dd>@Html.DisplayFor(model => model.ContractsInPackage)</dd>
+
+                    <dt>@Html.LabelFor(model => model.ContractsCanceledInPackage)</dt>
+                    <dd>@Html.DisplayFor(model => model.ContractsCanceledInPackage)</dd>
+
+                    <dt>@Html.LabelFor(model => model.ContractsTotalInPackage)</dt>
+                    <dd>@Html.DisplayFor(model => model.ContractsTotalInPackage)</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>

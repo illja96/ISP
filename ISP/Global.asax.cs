@@ -28,7 +28,7 @@ namespace ISP
 
         public void InitializeDB()
         {
-            if (Database.Exists("ISPConnectionString") == false)
+            if (Database.Exists("DefaultConnection") == false)
             {
                 Database.SetInitializer(new MigrateDatabaseToLatestVersion<ISPContext, Configuration>());
                 using (ISPContext db = new ISPContext())

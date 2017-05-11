@@ -18,23 +18,12 @@ namespace ISP.DAL.DBModels
         public string Name { get; set; }
 
         [Required]
-        [Display(Name = "Скорость отдачи (МБ/с)")]
-        public string UploadSpeed { get; set; }
-
-        [Required]
         [Display(Name = "Скорость приёма (МБ/с)")]
-        public string DownloadSpeed { get; set; }
+        public double DownloadSpeed { get; set; }
 
         [Required]
-        [DefaultValue(false)]
-        [Display(Name = "Трафик лимитирован?")]
-        public bool IsTrafficLimit { get; set; }
-
-        [Required]
-        [DefaultValue(0)]
-        [Range(0, double.MaxValue)]
-        [Display(Name = "Лимит трафика в МБ")]
-        public double TrafficLimit { get; set; }
+        [Display(Name = "Скорость отдачи (МБ/с)")]
+        public double UploadSpeed { get; set; }
 
         [Required]
         [Range(0, double.MaxValue)]
@@ -44,5 +33,7 @@ namespace ISP.DAL.DBModels
         [DefaultValue(false)]
         [Display(Name = "Аннулирован?")]
         public bool IsCanceled { get; set; }
+
+        public InternetPackage() { this.Id = Guid.NewGuid(); }
     }
 }

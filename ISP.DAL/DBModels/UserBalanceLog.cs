@@ -26,5 +26,7 @@ namespace ISP.DAL.DBModels
 
         [Display(Name = "Абонент")]
         public virtual User Subscriber { get; set; }
+
+        public UserBalanceLog() { this.Id = Guid.NewGuid(); }
     }
 }

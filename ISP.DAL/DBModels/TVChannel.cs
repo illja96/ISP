@@ -39,5 +39,7 @@ namespace ISP.DAL.DBModels
 
         [Display(Name = "Контракты")]
         public virtual ICollection<TVChannelContract> Contracts { get; set; }
+
+        public TVChannel() { this.Id = Guid.NewGuid(); }
     }
 }

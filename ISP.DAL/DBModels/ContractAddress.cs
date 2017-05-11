@@ -53,5 +53,7 @@ namespace ISP.DAL.DBModels
 
         [Display(Name = "Контракты на пакеты интернет услуг")]
         public virtual ICollection<InternetPackageContract> InternetPackageContracts { get; set; }
+
+        public ContractAddress() { this.Id = Guid.NewGuid(); }
     }
 }

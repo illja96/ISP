@@ -1,0 +1,16 @@
+﻿@model IEnumerable<ISP.DAL.ViewModels.TVChannelDetails>
+
+@{
+    ViewBag.Title = "Список ТВ каналов";
+}
+
+<div class="text-right">
+    @Html.ActionLink("Добавить", "Create", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Назад", "Intex", "AdminPanel", null, new { @class = "btn btn-default" })
+</div>
+
+<div id="tvChannelsTable">
+    @Html.Action("IndexTableAjax")
+</div>
+
+<div id="tvChannelInfo"></div>
