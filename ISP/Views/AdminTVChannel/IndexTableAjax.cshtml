@@ -51,11 +51,11 @@
             <td>
                 @if (tvChannel.IsCanceled)
                 {
-                    @Html.ActionLink("Аннулировать", "Renew", new { id = tvChannel.Id }, new { @class = "btn btn-xs btn-success" })
+                    @Html.ActionLink("Востановить", "Renew", new { id = tvChannel.Id }, new { @class = "btn btn-xs btn-success" })
                 }
                 else
                 {
-                    @Html.ActionLink("Аннулировать", "Canel", new { id = tvChannel.Id }, new { @class = "btn btn-xs btn-danger" })
+                    @Html.ActionLink("Аннулировать", "Cancel", new { id = tvChannel.Id }, new { @class = "btn btn-xs btn-danger" })
                 }
             </td>
         </tr>

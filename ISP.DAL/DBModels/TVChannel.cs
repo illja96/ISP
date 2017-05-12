@@ -18,7 +18,7 @@ namespace ISP.DAL.DBModels
         public string Name { get; set; }
 
         [Required]
-        [Display(Name = "Наличие IP-TV")]
+        [Display(Name = "Наличие IPTV")]
         public bool IsIPTV { get; set; }
 
         [Required]

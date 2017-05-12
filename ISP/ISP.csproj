@@ -267,7 +267,6 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\AdminPanel\Index.cshtml" />
     <Content Include="Views\AdminTVChannel\Create.cshtml" />
-    <Content Include="Views\AdminTVChannel\Delete.cshtml" />
     <Content Include="Views\AdminTVChannel\Edit.cshtml" />
     <Content Include="Views\AdminTVChannel\Index.cshtml" />
     <Content Include="Views\AdminTVChannel\DetailsAjax.cshtml" />

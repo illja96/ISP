@@ -1,19 +1,24 @@
 ﻿@model ISP.DAL.DBModels.TVChannel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Добавление ТВ канала";
 }
 
-<h2>Create</h2>
+<div class="text-right">
+    @Html.ActionLink("Назад", "Index", "AdminTVChannel", null, new { @class = "btn btn-default" })
+</div>
+<br />
+
+<div class="alert alert-info">
+    <h4>Внимание!</h4>
+    <p>Если поле "Наличие IPTV" или "Наличие TV" не будет установлено, то канал будет автоматически аннулирован!</p>
+</div>
 
 @using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
+{    
     <div class="form-horizontal">
-        <h4>TVChannel</h4>
-        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -62,12 +67,8 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Добавить" class="btn btn-primary" />
             </div>
         </div>
     </div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>

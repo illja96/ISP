@@ -6,8 +6,26 @@
 
 <div class="text-right">
     @Html.ActionLink("Добавить", "Create", null, new { @class = "btn btn-primary" })
-    @Html.ActionLink("Назад", "Intex", "AdminPanel", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Назад", "Index", "AdminPanel", null, new { @class = "btn btn-default" })
 </div>
+<br />
+
+<div class="alert alert-info">
+    <h4>Внимание!</h4>
+    <p>Если поле "Наличие IPTV" или "Наличие TV" не уставновленно и канал будет "Востановлен", то поля "Наличие IPTV" и "Наличие TV" будут автоматически установлены!</p>
+</div>
+
+<div class="form-inline">
+    @using (Ajax.BeginForm("IndexTableAjax", new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "tvChannelsTable" }))
+    {
+        @Html.DropDownList("sortBy", (ViewBag.sortBy as SelectList), new { @class = "form-control" })
+
+        @Html.DropDownList("orderByDescending", (ViewBag.orderByDescending as SelectList), new { @class = "form-control" })
+
+        <input type="submit" class="btn btn-primary" value="Сортировать" />
+    }
+</div>
+<br />
 
 <div id="tvChannelsTable">
     @Html.Action("IndexTableAjax")

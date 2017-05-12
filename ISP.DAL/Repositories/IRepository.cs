@@ -20,7 +20,9 @@ namespace ISP.DAL.Repositories
 
         void Create(T item);
         void Edit(T item);
+        void Cancel(Guid id);
         void Cancel(T item);
+        void Renew(Guid id);
         void Renew(T item);
     }
 }
