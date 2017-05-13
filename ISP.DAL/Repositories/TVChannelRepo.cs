@@ -18,7 +18,7 @@ namespace ISP.DAL.Repositories
         public void Create(TVChannel item)
         {
             item.Id = Guid.NewGuid();
-            if(item.IsTV == false && item.IsIPTV == false)
+            if (item.IsTV == false && item.IsIPTV == false)
             {
                 item.IsCanceled = true;
             }
@@ -105,54 +105,54 @@ namespace ISP.DAL.Repositories
             return context.TVChannels.OrderByDescending(keySelector);
         }
 
-        public IEnumerable<TVChannel> Sort(IEnumerable<TVChannel> tvChannels, string sortBy, bool orderByDescending)
+        public IEnumerable<TVChannel> Sort(IEnumerable<TVChannel> items, string sortBy, bool orderByDescending)
         {
             switch (sortBy)
             {
                 case "Name":
                     if (orderByDescending)
-                        return tvChannels.OrderByDescending(tvChannel => tvChannel.Name);
+                        return items.OrderByDescending(tvChannel => tvChannel.Name);
                     else
-                        return tvChannels.OrderBy(tvChannel => tvChannel.Name);
+                        return items.OrderBy(tvChannel => tvChannel.Name);
 
                 case "Price":
                     if (orderByDescending)
-                        return tvChannels.OrderByDescending(tvChannel => tvChannel.Price);
+                        return items.OrderByDescending(tvChannel => tvChannel.Price);
                     else
-                        return tvChannels.OrderBy(tvChannel => tvChannel.Price);
+                        return items.OrderBy(tvChannel => tvChannel.Price);
 
                 case "IsTV":
                     if (orderByDescending)
-                        return tvChannels.OrderByDescending(tvChannel => tvChannel.IsTV);
+                        return items.OrderByDescending(tvChannel => tvChannel.IsTV);
                     else
-                        return tvChannels.OrderBy(tvChannel => tvChannel.IsTV);
+                        return items.OrderBy(tvChannel => tvChannel.IsTV);
 
                 case "IsIPTV":
                     if (orderByDescending)
-                        return tvChannels.OrderByDescending(tvChannel => tvChannel.IsIPTV);
+                        return items.OrderByDescending(tvChannel => tvChannel.IsIPTV);
                     else
-                        return tvChannels.OrderBy(tvChannel => tvChannel.IsIPTV);
+                        return items.OrderBy(tvChannel => tvChannel.IsIPTV);
 
                 case "IsCanceled":
                     if (orderByDescending)
-                        return tvChannels.OrderByDescending(tvChannel => tvChannel.IsCanceled);
+                        return items.OrderByDescending(tvChannel => tvChannel.IsCanceled);
                     else
-                        return tvChannels.OrderBy(tvChannel => tvChannel.IsCanceled);
+                        return items.OrderBy(tvChannel => tvChannel.IsCanceled);
 
                 default:
-                    return tvChannels;
+                    return items;
             }
         }
         public void GetAvailableSortList(out Dictionary<string, string> sortBy, out Dictionary<string, bool> orderByDescending)
         {
             sortBy = new Dictionary<string, string>()
             {
-                {"По умолчанию", "Id" },
-                {"По названию", "Name" },
+                { "По умолчанию", "Id" },
+                { "По названию", "Name" },
                 { "По наличию TV", "IsTV" },
-                { "По наличию IPTV","IsIPTV" },
-                { "По цене","Price" },
-                { "По состоянию","IsCanceled" }
+                { "По наличию IPTV", "IsIPTV" },
+                { "По цене", "Price" },
+                { "По состоянию", "IsCanceled" }
             };
 
             orderByDescending = new Dictionary<string, bool>()

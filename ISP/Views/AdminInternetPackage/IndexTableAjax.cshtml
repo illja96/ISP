@@ -1,0 +1,63 @@
+﻿@model IEnumerable<ISP.DAL.ViewModels.InternetPackageDetails>
+
+<table class="table table-striped table-hover table-bordered">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DownloadSpeed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UploadSpeed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsCanceled)
+        </th>
+    </tr>
+
+    @foreach (var internetPackage in Model)
+    {
+        string trClasses = (internetPackage.IsCanceled ? "danger" : "");
+
+        <tr class="@trClasses">
+            <td>
+                @Html.DisplayFor(model => internetPackage.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(model => internetPackage.DownloadSpeed)
+            </td>
+            <td>
+                @Html.DisplayFor(model => internetPackage.UploadSpeed)
+            </td>
+            <td>
+                @Html.DisplayFor(model => internetPackage.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(model => internetPackage.IsCanceled)
+            </td>
+            <td>
+                @Ajax.ActionLink("Подробности", "DetailsAjax",
+               new { id = internetPackage.Id },
+               new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "internetPackageInfo", OnComplete = "$('#modelDetails').modal();" },
+               new { @class = "btn btn-xs btn-info" })
+            </td>
+            <td>
+                @Html.ActionLink("Редактировать", "Edit", new { id = internetPackage.Id }, new { @class = "btn btn-xs btn-warning" })
+            </td>
+            <td>
+                @if (internetPackage.IsCanceled)
+                {
+                    @Html.ActionLink("Востановить", "Renew", new { id = internetPackage.Id }, new { @class = "btn btn-xs btn-success" })
+                }
+                else
+                {
+                    @Html.ActionLink("Аннулировать", "Cancel", new { id = internetPackage.Id }, new { @class = "btn btn-xs btn-danger" })
+                }
+            </td>
+        </tr>
+    }
+</table>

@@ -33,33 +33,6 @@ namespace ISP.DAL
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
             
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-            
-            //modelBuilder.Entity<TVChannelContract>()
-            //    .HasRequired(tvc => tvc.Address)
-            //    .WithMany()
-            //    .WillCascadeOnDelete(false);
-            //modelBuilder.Entity<TVChannelContract>()
-            //    .HasRequired(tvc => tvc.TVChannel)
-            //    .WithMany()
-            //    .WillCascadeOnDelete(false);
-
-            //modelBuilder.Entity<TVChannelPackageContract>()
-            //    .HasRequired(tvc => tvc.Address)
-            //    .WithMany()
-            //    .WillCascadeOnDelete(false);
-            //modelBuilder.Entity<TVChannelPackageContract>()
-            //    .HasRequired(tvc => tvc.TVChannelPackage)
-            //    .WithMany()
-            //    .WillCascadeOnDelete(false);
-
-            //modelBuilder.Entity<InternetPackageContract>()
-            //    .HasRequired(tvc => tvc.Address)
-            //    .WithMany()
-            //    .WillCascadeOnDelete(false);
-            //modelBuilder.Entity<InternetPackageContract>()
-            //    .HasRequired(tvc => tvc.InternetPackage)
-            //    .WithMany()
-            //    .WillCascadeOnDelete(false);
         }
 
         public static ISPContext Create()

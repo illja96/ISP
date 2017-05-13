@@ -24,5 +24,8 @@ namespace ISP.DAL.Repositories
         void Cancel(T item);
         void Renew(Guid id);
         void Renew(T item);
+
+        IEnumerable<T> Sort(IEnumerable<T> items, string sortBy, bool orderByDescending);
+        void GetAvailableSortList(out Dictionary<string, string> sortBy, out Dictionary<string, bool> orderByDescending);
     }
 }

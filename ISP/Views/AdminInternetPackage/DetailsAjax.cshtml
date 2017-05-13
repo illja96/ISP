@@ -1,0 +1,39 @@
+﻿@model ISP.DAL.ViewModels.InternetPackageDetails
+
+<div class="modal fade" id="modelDetails" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Подробности пакета интернет услуг "@Model.Name"</h4>
+            </div>
+            <div class="modal-body">
+                <dl class="dl-horizontal">
+                    <dt>@Html.LabelFor(model => model.Name)</dt>
+                    <dd>@Html.DisplayFor(model => model.Name)</dd>
+
+                    <dt>@Html.LabelFor(model => model.DownloadSpeed)</dt>
+                    <dd>@Html.DisplayFor(model => model.DownloadSpeed)</dd>
+
+                    <dt>@Html.LabelFor(model => model.UploadSpeed)</dt>
+                    <dd>@Html.DisplayFor(model => model.UploadSpeed)</dd>
+
+                    <dt>@Html.LabelFor(model => model.Price)</dt>
+                    <dd>@Html.DisplayFor(model => model.Price)</dd>
+
+                    <dt>@Html.LabelFor(model => model.IsCanceled)</dt>
+                    <dd>@Html.DisplayFor(model => model.IsCanceled)</dd>
+
+                    <dt>@Html.LabelFor(model => model.Contracts)</dt>
+                    <dd>@Html.DisplayFor(model => model.Contracts)</dd>
+
+                    <dt>@Html.LabelFor(model => model.ContractsCanceled)</dt>
+                    <dd>@Html.DisplayFor(model => model.ContractsCanceled)</dd>
+
+                    <dt>@Html.LabelFor(model => model.ContractsTotal)</dt>
+                    <dd>@Html.DisplayFor(model => model.ContractsTotal)</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>

@@ -34,6 +34,9 @@ namespace ISP.DAL.DBModels
         [Display(Name = "Аннулирован?")]
         public bool IsCanceled { get; set; }
 
+        [Display(Name = "Контракты")]
+        public virtual ICollection<InternetPackageContract> Contracts { get; set; }
+
         public InternetPackage() { this.Id = Guid.NewGuid(); }
     }
 }
