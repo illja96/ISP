@@ -51,7 +51,7 @@
             <td>
                 @if (internetPackage.IsCanceled)
                 {
-                    using (Html.BeginForm("Renew", "AdminInternetPackageChannel", new { id = internetPackage.Id }))
+                    using (Html.BeginForm("Renew", "AdminInternetPackage", new { id = internetPackage.Id }))
                     {
                         @Html.AntiForgeryToken()
                         <input type="submit" class="btn btn-xs btn-success" value="Востановить" />
@@ -59,7 +59,7 @@
                 }
                 else
                 {
-                    using (Html.BeginForm("Cancel", "AdminInternetPackageChannel", new { id = internetPackage.Id }))
+                    using (Html.BeginForm("Cancel", "AdminInternetPackage", new { id = internetPackage.Id }))
                     {
                         @Html.AntiForgeryToken()
                         <input type="submit" class="btn btn-xs btn-success" value="Аннулировать" />
