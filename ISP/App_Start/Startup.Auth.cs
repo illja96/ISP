@@ -8,6 +8,7 @@ using Owin;
 using ISP.Models;
 using ISP.DAL.DBModels;
 using ISP.DAL;
+using ISP.BLL.Identity;
 
 namespace ISP
 {
