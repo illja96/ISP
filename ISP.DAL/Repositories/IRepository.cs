@@ -8,15 +8,15 @@ namespace ISP.DAL.Repositories
 {
     interface IRepository<T> : IDisposable where T : class
     {
+        T GetNotCanceled(Guid id);
+        IEnumerable<T> GetAllNotCanceled();
+        IEnumerable<T> GetAllNotCanceledOrderBy(System.Linq.Expressions.Expression<Func<T, object>> keySelector);
+        IEnumerable<T> GetAllNotCanceledOrderByDescending(System.Linq.Expressions.Expression<Func<T, object>> keySelector);
+        
         T Get(Guid id);
         IEnumerable<T> GetAll();
-        IEnumerable<T> GetAllOrderBy(System.Linq.Expressions.Expression<Func<T, object>> keySelector);
+        IEnumerable<T> GetAllOrderBy(System.Linq.Expressions.Expression<Func<T, object>> keySelector);       
         IEnumerable<T> GetAllOrderByDescending(System.Linq.Expressions.Expression<Func<T, object>> keySelector);
-
-        T GetCancelled(Guid id);
-        IEnumerable<T> GetAllCancelled();
-        IEnumerable<T> GetAllCancelledOrderBy(System.Linq.Expressions.Expression<Func<T, object>> keySelector);
-        IEnumerable<T> GetAllCancelledOrderByDescending(System.Linq.Expressions.Expression<Func<T, object>> keySelector);
 
         void Create(T item);
         void Edit(T item);

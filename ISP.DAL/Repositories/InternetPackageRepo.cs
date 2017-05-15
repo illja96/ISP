@@ -28,7 +28,7 @@ namespace ISP.DAL.Repositories
         }
         public void Cancel(Guid id)
         {
-            InternetPackage item = GetCancelled(id);
+            InternetPackage item = Get(id);
             item.IsCanceled = true;
             context.Entry<InternetPackage>(item).State = System.Data.Entity.EntityState.Modified;
             context.SaveChanges();
@@ -41,7 +41,7 @@ namespace ISP.DAL.Repositories
         }
         public void Renew(Guid id)
         {
-            InternetPackage item = GetCancelled(id);
+            InternetPackage item = Get(id);
             item.IsCanceled = false;
             context.Entry<InternetPackage>(item).State = System.Data.Entity.EntityState.Modified;
             context.SaveChanges();
@@ -53,36 +53,36 @@ namespace ISP.DAL.Repositories
             context.SaveChanges();
         }
 
-        public InternetPackage Get(Guid id)
+        public InternetPackage GetNotCanceled(Guid id)
         {
             return context.InternetPackages.First(internetPackage => internetPackage.Id == id && internetPackage.IsCanceled == false);
         }
-        public IEnumerable<InternetPackage> GetAll()
+        public IEnumerable<InternetPackage> GetAllNotCanceled()
         {
             return context.InternetPackages.Where(internetPackage => internetPackage.IsCanceled == false);
         }
-        public IEnumerable<InternetPackage> GetAllOrderBy(Expression<Func<InternetPackage, object>> keySelector)
+        public IEnumerable<InternetPackage> GetAllNotCanceledOrderBy(Expression<Func<InternetPackage, object>> keySelector)
         {
             return context.InternetPackages.Where(internetPackage => internetPackage.IsCanceled == false).OrderBy(keySelector);
         }
-        public IEnumerable<InternetPackage> GetAllOrderByDescending(Expression<Func<InternetPackage, object>> keySelector)
+        public IEnumerable<InternetPackage> GetAllNotCanceledOrderByDescending(Expression<Func<InternetPackage, object>> keySelector)
         {
             return context.InternetPackages.Where(internetPackage => internetPackage.IsCanceled == false).OrderByDescending(keySelector);
         }
 
-        public InternetPackage GetCancelled(Guid id)
+        public InternetPackage Get(Guid id)
         {
             return context.InternetPackages.First(internetPackage => internetPackage.Id == id);
         }
-        public IEnumerable<InternetPackage> GetAllCancelled()
+        public IEnumerable<InternetPackage> GetAll()
         {
             return context.InternetPackages;
         }
-        public IEnumerable<InternetPackage> GetAllCancelledOrderBy(Expression<Func<InternetPackage, object>> keySelector)
+        public IEnumerable<InternetPackage> GetAllOrderBy(Expression<Func<InternetPackage, object>> keySelector)
         {
             return context.InternetPackages.OrderBy(keySelector);
         }
-        public IEnumerable<InternetPackage> GetAllCancelledOrderByDescending(Expression<Func<InternetPackage, object>> keySelector)
+        public IEnumerable<InternetPackage> GetAllOrderByDescending(Expression<Func<InternetPackage, object>> keySelector)
         {
             return context.InternetPackages.OrderByDescending(keySelector);
         }

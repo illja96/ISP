@@ -51,11 +51,19 @@
             <td>
                 @if (internetPackage.IsCanceled)
                 {
-                    @Html.ActionLink("Востановить", "Renew", new { id = internetPackage.Id }, new { @class = "btn btn-xs btn-success" })
+                    using (Html.BeginForm("Renew", "AdminInternetPackageChannel", new { id = internetPackage.Id }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="submit" class="btn btn-xs btn-success" value="Востановить" />
+                    }
                 }
                 else
                 {
-                    @Html.ActionLink("Аннулировать", "Cancel", new { id = internetPackage.Id }, new { @class = "btn btn-xs btn-danger" })
+                    using (Html.BeginForm("Cancel", "AdminInternetPackageChannel", new { id = internetPackage.Id }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="submit" class="btn btn-xs btn-success" value="Аннулировать" />
+                    }
                 }
             </td>
         </tr>

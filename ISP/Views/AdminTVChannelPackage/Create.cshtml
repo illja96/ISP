@@ -1,51 +1,24 @@
-﻿@model ISP.DAL.DBModels.TVChannel
+﻿@model ISP.DAL.DBModels.TVChannelPackage
 
 @{
-    ViewBag.Title = "Редактирование ТВ канала";
+    ViewBag.Title = "Добавление пакета ТВ каналов";
 }
 
 <div class="text-right">
-    @Html.ActionLink("Назад", "Index", "AdminTVChannel", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Назад", "Index", "AdminTVChannelPackage", null, new { @class = "btn btn-default" })
 </div>
 <br />
 
-<div class="alert alert-info">
-    <h4>Внимание!</h4>
-    <p>Если поле "Наличие IPTV" или "Наличие TV" не будет установлено, то канал будет автоматически аннулирован!</p>
-</div>
-
-@using (Html.BeginForm())
-{
+@using (Html.BeginForm()) 
+{    
     <div class="form-horizontal">
-        @Html.AntiForgeryToken()
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsIPTV, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsIPTV)
-                    @Html.ValidationMessageFor(model => model.IsIPTV, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsTV, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsTV)
-                    @Html.ValidationMessageFor(model => model.IsTV, "", new { @class = "text-danger" })
-                </div>
             </div>
         </div>
 
@@ -69,7 +42,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Сохранить" class="btn btn-primary" />
+                <input type="submit" value="Добавить" class="btn btn-primary" />
             </div>
         </div>
     </div>

@@ -28,7 +28,7 @@ namespace ISP.Controllers
 
         public ActionResult IndexTableAjax(string sortBy = "Id", bool orderByDescending = false)
         {
-            IEnumerable<InternetPackage> internetPackages = internetPackageRepo.GetAllCancelled();
+            IEnumerable<InternetPackage> internetPackages = internetPackageRepo.GetAll();
             IEnumerable<InternetPackage> internetPackagesSorted = internetPackageRepo.Sort(internetPackages, sortBy, orderByDescending);
             IEnumerable<InternetPackageDetails> internetPackagesDetailsSorted = internetPackagesSorted.Select(internetPackage => new InternetPackageDetails(internetPackage)).ToArray();
 
@@ -37,17 +37,18 @@ namespace ISP.Controllers
 
         public ActionResult DetailsAjax(Guid id)
         {
-            InternetPackageDetails internetPackage = new InternetPackageDetails(internetPackageRepo.GetCancelled(id));
+            InternetPackageDetails internetPackage = new InternetPackageDetails(internetPackageRepo.Get(id));
             return PartialView(internetPackage);
         }
 
         public ActionResult Create()
         {
-            TVChannel tvChannel = new TVChannel();
-            return View();
+            InternetPackage internetPackage = new InternetPackage();
+            return View(internetPackage);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(InternetPackage internetPackage)
         {
             if (!ModelState.IsValid)
@@ -61,11 +62,12 @@ namespace ISP.Controllers
 
         public ActionResult Edit(Guid id)
         {
-            InternetPackage tvChannel = internetPackageRepo.GetCancelled(id);
-            return View(tvChannel);
+            InternetPackage internetPackage = internetPackageRepo.Get(id);
+            return View(internetPackage);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(InternetPackage internetPackage)
         {
             if (!ModelState.IsValid)
@@ -77,12 +79,16 @@ namespace ISP.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Cancel(Guid id)
         {
             internetPackageRepo.Cancel(id);
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Renew(Guid id)
         {
             internetPackageRepo.Renew(id);

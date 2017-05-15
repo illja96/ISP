@@ -57,8 +57,8 @@ namespace ISP.DAL.ViewModels
             Price = tvChannel.Price;
             IsCanceled = tvChannel.IsCanceled;
 
-            Contracts = tvChannel.Contracts.Where(tvChannelContract => tvChannelContract.IsCanceled == false).Count();
-            ContractsCanceled = tvChannel.Contracts.Where(tvChannelContract => tvChannelContract.IsCanceled == true).Count();
+            Contracts = tvChannel.Contracts.Count(tvChannelContract => tvChannelContract.IsCanceled == false);
+            ContractsCanceled = tvChannel.Contracts.Count(tvChannelContract => tvChannelContract.IsCanceled == true);
             ContractsTotal = Contracts + ContractsTotal;
 
             Packages = tvChannel.Packages.Select(tvChannelPackage => tvChannelPackage.Name).ToArray();

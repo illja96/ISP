@@ -51,11 +51,19 @@
             <td>
                 @if (tvChannel.IsCanceled)
                 {
-                    @Html.ActionLink("Востановить", "Renew", new { id = tvChannel.Id }, new { @class = "btn btn-xs btn-success" })
+                    using (Html.BeginForm("Renew", "AdminTVChannel", new { id = tvChannel.Id }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="submit" class="btn btn-xs btn-success" value="Востановить" />
+                    }
                 }
                 else
                 {
-                    @Html.ActionLink("Аннулировать", "Cancel", new { id = tvChannel.Id }, new { @class = "btn btn-xs btn-danger" })
+                    using (Html.BeginForm("Cancel", "AdminTVChannel", new { id = tvChannel.Id }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="submit" class="btn btn-xs btn-success" value="Аннулировать" />
+                    }
                 }
             </td>
         </tr>

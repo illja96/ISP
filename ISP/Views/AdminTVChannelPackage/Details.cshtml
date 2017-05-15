@@ -1,0 +1,97 @@
+﻿@model ISP.DAL.ViewModels.TVChannelPackageDetails
+@{
+    ViewBag.Title = string.Format("Подробности пакета ТВ каналов \"{0}\"", Model.Name);
+}
+
+<div class="text-right">
+    @Html.ActionLink("Назад", "Index", "AdminTVChannelPackage", null, new { @class = "btn btn-default" })
+</div>
+<br />
+
+<dl class="dl-horizontal">
+    <dt>@Html.LabelFor(model => model.Name)</dt>
+    <dd>@Html.DisplayFor(model => model.Name)</dd>
+
+    <dt>@Html.LabelFor(model => model.Price)</dt>
+    <dd>@Html.DisplayFor(model => model.Price)</dd>
+
+    <dt>@Html.LabelFor(model => model.ChannelsCount)</dt>
+    <dd>@Html.DisplayFor(model => model.ChannelsCount)</dd>
+
+    <dt>@Html.LabelFor(model => model.IsCanceled)</dt>
+    <dd>@Html.DisplayFor(model => model.IsCanceled)</dd>
+
+    <dt>@Html.LabelFor(model => model.Contracts)</dt>
+    <dd>@Html.DisplayFor(model => model.Contracts)</dd>
+
+    <dt>@Html.LabelFor(model => model.ContractsCanceled)</dt>
+    <dd>@Html.DisplayFor(model => model.ContractsCanceled)</dd>
+
+    <dt>@Html.LabelFor(model => model.ContractsTotal)</dt>
+    <dd>@Html.DisplayFor(model => model.ContractsTotal)</dd>
+</dl>
+
+<hr />
+
+<div id="tvChannelInfo">
+    <table class="table table-striped table-hover table-bordered">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Channels.First().Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Channels.First().IsIPTV)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Channels.First().IsTV)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Channels.First().Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Channels.First().IsCanceled)
+            </th>
+        </tr>
+
+        @using (Html.BeginForm("AddChannelToPackage", "AdminTVChannelPackage", new { tvChannelPackageId = Model.Id }))
+        {
+            @Html.AntiForgeryToken()
+            <tr class="info">
+                <td colspan="5">
+                    @Html.DropDownList("tvChannelId", (ViewBag.tvChannelId as SelectList), new { @class = "form-control" })
+                </td>
+                <td>
+                    <input type="submit" value="Добавить в пакет" class="btn btn-primary" />
+                </td>
+            </tr>
+        }
+
+        @foreach (var tvChannel in Model.Channels)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => tvChannel.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => tvChannel.IsIPTV)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => tvChannel.IsTV)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => tvChannel.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => tvChannel.IsCanceled)
+                </td>
+                <td>
+                    @using (Html.BeginForm("RemoveChannelFromPackage", "AdminTVChannelPackage", new { tvChannelPackageId = Model.Id, tvChannelId = tvChannel.Id }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="submit" value="Удалить из пакета" class="btn btn-xs btn-danger" />
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+</div>

@@ -193,6 +193,7 @@
     <Compile Include="Controllers\AdminInternetPackageController.cs" />
     <Compile Include="Controllers\AdminPanelController.cs" />
     <Compile Include="Controllers\AdminTVChannelController.cs" />
+    <Compile Include="Controllers\AdminTVChannelPackageController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
@@ -277,6 +278,11 @@
     <Content Include="Views\AdminInternetPackage\DetailsAjax.cshtml" />
     <Content Include="Views\AdminInternetPackage\Edit.cshtml" />
     <Content Include="Views\AdminInternetPackage\IndexTableAjax.cshtml" />
+    <Content Include="Views\AdminTVChannelPackage\Create.cshtml" />
+    <Content Include="Views\AdminTVChannelPackage\Edit.cshtml" />
+    <Content Include="Views\AdminTVChannelPackage\Index.cshtml" />
+    <Content Include="Views\AdminTVChannelPackage\IndexTableAjax.cshtml" />
+    <Content Include="Views\AdminTVChannelPackage\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

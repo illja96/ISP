@@ -28,7 +28,7 @@ namespace ISP.Controllers
 
         public ActionResult IndexTableAjax(string sortBy = "Id", bool orderByDescending = false)
         {
-            IEnumerable<TVChannel> tvChannels = tvChannelRepo.GetAllCancelled();
+            IEnumerable<TVChannel> tvChannels = tvChannelRepo.GetAll();
             IEnumerable<TVChannel> tvChannelsSorted = tvChannelRepo.Sort(tvChannels, sortBy, orderByDescending);
             IEnumerable<TVChannelDetails> tvChannelsDetailsSorted = tvChannelsSorted.Select(tvChannel => new TVChannelDetails(tvChannel)).ToArray();
 
@@ -37,17 +37,18 @@ namespace ISP.Controllers
 
         public ActionResult DetailsAjax(Guid id)
         {
-            TVChannelDetails tvChannel = new TVChannelDetails(tvChannelRepo.GetCancelled(id));
+            TVChannelDetails tvChannel = new TVChannelDetails(tvChannelRepo.Get(id));
             return PartialView(tvChannel);
         }
 
         public ActionResult Create()
         {
             TVChannel tvChannel = new TVChannel();
-            return View();
+            return View(tvChannel);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(TVChannel tvChannel)
         {
             if (!ModelState.IsValid)
@@ -61,11 +62,12 @@ namespace ISP.Controllers
 
         public ActionResult Edit(Guid id)
         {
-            TVChannel tvChannel = tvChannelRepo.GetCancelled(id);
+            TVChannel tvChannel = tvChannelRepo.Get(id);
             return View(tvChannel);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(TVChannel tvChannel)
         {
             if (!ModelState.IsValid)
@@ -77,12 +79,16 @@ namespace ISP.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Cancel(Guid id)
         {
             tvChannelRepo.Cancel(id);
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Renew(Guid id)
         {
             tvChannelRepo.Renew(id);

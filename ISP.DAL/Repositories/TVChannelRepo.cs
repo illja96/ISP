@@ -36,7 +36,7 @@ namespace ISP.DAL.Repositories
         }
         public void Cancel(Guid id)
         {
-            TVChannel item = GetCancelled(id);
+            TVChannel item = Get(id);
             item.IsCanceled = true;
             context.Entry<TVChannel>(item).State = System.Data.Entity.EntityState.Modified;
             context.SaveChanges();
@@ -49,7 +49,7 @@ namespace ISP.DAL.Repositories
         }
         public void Renew(Guid id)
         {
-            TVChannel item = GetCancelled(id);
+            TVChannel item = Get(id);
             if (item.IsTV == false && item.IsIPTV == false)
             {
                 item.IsTV = true;
@@ -71,36 +71,36 @@ namespace ISP.DAL.Repositories
             context.SaveChanges();
         }
 
-        public TVChannel Get(Guid id)
+        public TVChannel GetNotCanceled(Guid id)
         {
             return context.TVChannels.First(tvChannel => tvChannel.IsCanceled == false && tvChannel.Id == id);
         }
-        public IEnumerable<TVChannel> GetAll()
+        public IEnumerable<TVChannel> GetAllNotCanceled()
         {
             return context.TVChannels.Where(tvChannel => tvChannel.IsCanceled == false);
         }
-        public IEnumerable<TVChannel> GetAllOrderBy(Expression<Func<TVChannel, object>> keySelector)
+        public IEnumerable<TVChannel> GetAllNotCanceledOrderBy(Expression<Func<TVChannel, object>> keySelector)
         {
             return context.TVChannels.Where(tvChannel => tvChannel.IsCanceled == false).OrderBy(keySelector);
         }
-        public IEnumerable<TVChannel> GetAllOrderByDescending(Expression<Func<TVChannel, object>> keySelector)
+        public IEnumerable<TVChannel> GetAllNotCanceledOrderByDescending(Expression<Func<TVChannel, object>> keySelector)
         {
             return context.TVChannels.Where(tvChannel => tvChannel.IsCanceled == false).OrderByDescending(keySelector);
         }
 
-        public TVChannel GetCancelled(Guid id)
+        public TVChannel Get(Guid id)
         {
             return context.TVChannels.First(tvChannel => tvChannel.Id == id);
         }
-        public IEnumerable<TVChannel> GetAllCancelled()
+        public IEnumerable<TVChannel> GetAll()
         {
             return context.TVChannels;
         }
-        public IEnumerable<TVChannel> GetAllCancelledOrderBy(Expression<Func<TVChannel, object>> keySelector)
+        public IEnumerable<TVChannel> GetAllOrderBy(Expression<Func<TVChannel, object>> keySelector)
         {
             return context.TVChannels.OrderBy(keySelector);
         }
-        public IEnumerable<TVChannel> GetAllCancelledOrderByDescending(Expression<Func<TVChannel, object>> keySelector)
+        public IEnumerable<TVChannel> GetAllOrderByDescending(Expression<Func<TVChannel, object>> keySelector)
         {
             return context.TVChannels.OrderByDescending(keySelector);
         }

@@ -3,7 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>@ViewBag.Title</title>
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -18,21 +20,34 @@
                 </button>
                 @Html.ActionLink("ISP", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
+
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Интернет", "Internet", "Home")</li>
+                    <li>@Html.ActionLink("ТВ", "TV", "Home")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>
+
     <div class="container body-content">
-        <h2>@ViewBag.Title</h2>
-        <hr />
+        @{
+            string controllerName = ViewContext.RouteData.Values["controller"].ToString();
+            string actionName = ViewContext.RouteData.Values["action"].ToString();
+
+            if (controllerName == "Home" && actionName == "Index")
+            { }
+            else
+            {
+                <h2>@ViewBag.Title</h2>
+                <hr />
+            }
+        }
+
         @RenderBody()
         <hr />
+
         <footer>
             <p>&copy; 2017 - Internet Service Provider for EPAM training. Illya Khovanskyi</p>
         </footer>
