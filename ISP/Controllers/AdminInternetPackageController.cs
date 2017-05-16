@@ -1,4 +1,5 @@
-﻿using ISP.DAL.DBModels;
+﻿using ISP.BLL.ModelActions;
+using ISP.DAL.DBModels;
 using ISP.DAL.Repositories;
 using ISP.DAL.ViewModels;
 using System;
@@ -12,13 +13,13 @@ namespace ISP.Controllers
     [Authorize(Roles = "Administrator")]
     public class AdminInternetPackageController : Controller
     {
-        private InternetPackageRepo internetPackageRepo = new InternetPackageRepo();
+        private InternetPackageActions actions = new InternetPackageActions();
 
         public ActionResult Index()
         {
             Dictionary<string, string> sortBy;
             Dictionary<string, bool> orderByDescending;
-            internetPackageRepo.GetAvailableSortList(out sortBy, out orderByDescending);
+            actions.GetAvailableSortList(out sortBy, out orderByDescending);
 
             ViewBag.sortBy = sortBy.Select(item => new SelectListItem() { Text = item.Key, Value = item.Value });
             ViewBag.orderByDescending = orderByDescending.Select(item => new SelectListItem() { Text = item.Key, Value = item.Value.ToString() });
@@ -28,8 +29,8 @@ namespace ISP.Controllers
 
         public ActionResult IndexTableAjax(string sortBy = "Id", bool orderByDescending = false)
         {
-            IEnumerable<InternetPackage> internetPackages = internetPackageRepo.GetAll();
-            IEnumerable<InternetPackage> internetPackagesSorted = internetPackageRepo.Sort(internetPackages, sortBy, orderByDescending);
+            IEnumerable<InternetPackage> internetPackages = actions.GetAll();
+            IEnumerable<InternetPackage> internetPackagesSorted = actions.Sort(internetPackages, sortBy, orderByDescending);
             IEnumerable<InternetPackageDetails> internetPackagesDetailsSorted = internetPackagesSorted.Select(internetPackage => new InternetPackageDetails(internetPackage)).ToArray();
 
             return PartialView(internetPackagesDetailsSorted);
@@ -37,7 +38,7 @@ namespace ISP.Controllers
 
         public ActionResult DetailsAjax(Guid id)
         {
-            InternetPackageDetails internetPackage = new InternetPackageDetails(internetPackageRepo.Get(id));
+            InternetPackageDetails internetPackage = new InternetPackageDetails(actions.Get(id));
             return PartialView(internetPackage);
         }
 
@@ -56,13 +57,13 @@ namespace ISP.Controllers
                 return View(internetPackage);
             }
 
-            internetPackageRepo.Create(internetPackage);
+            actions.Create(internetPackage);
             return RedirectToAction("Index");
         }
 
         public ActionResult Edit(Guid id)
         {
-            InternetPackage internetPackage = internetPackageRepo.Get(id);
+            InternetPackage internetPackage = actions.Get(id);
             return View(internetPackage);
         }
 
@@ -75,7 +76,7 @@ namespace ISP.Controllers
                 return View(internetPackage);
             }
 
-            internetPackageRepo.Edit(internetPackage);
+            actions.Edit(internetPackage);
             return RedirectToAction("Index");
         }
 
@@ -83,7 +84,7 @@ namespace ISP.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Cancel(Guid id)
         {
-            internetPackageRepo.Cancel(id);
+            actions.Cancel(id);
             return RedirectToAction("Index");
         }
 
@@ -91,7 +92,7 @@ namespace ISP.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Renew(Guid id)
         {
-            internetPackageRepo.Renew(id);
+            actions.Renew(id);
             return RedirectToAction("Index");
         }
     }

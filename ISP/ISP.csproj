@@ -310,7 +310,7 @@
       <Name>ISP.BLL</Name>
     </ProjectReference>
     <ProjectReference Include="..\ISP.DAL\ISP.DAL.csproj">
-      <Project>{BB91D519-0003-4D2C-B54E-2F98C0ADFAEE}</Project>
+      <Project>{bb91d519-0003-4d2c-b54e-2f98c0adfaee}</Project>
       <Name>ISP.DAL</Name>
     </ProjectReference>
   </ItemGroup>

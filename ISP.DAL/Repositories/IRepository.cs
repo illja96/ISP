@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ISP.DAL.Repositories
 {
-    interface IRepository<T> : IDisposable where T : class
+    public interface IRepository<T> : IDisposable where T : class
     {
         T GetNotCanceled(Guid id);
         IEnumerable<T> GetAllNotCanceled();

@@ -1,4 +1,5 @@
-﻿using ISP.DAL.DBModels;
+﻿using ISP.BLL.ModelActions;
+using ISP.DAL.DBModels;
 using ISP.DAL.Repositories;
 using ISP.DAL.ViewModels;
 using System;
@@ -12,13 +13,13 @@ namespace ISP.Controllers
     [Authorize(Roles = "Administrator")]
     public class AdminTVChannelController : Controller
     {
-        private TVChannelRepo tvChannelRepo = new TVChannelRepo();
+        private TVChannelActions actions = new TVChannelActions();
 
         public ActionResult Index()
         {
             Dictionary<string, string> sortBy;
             Dictionary<string, bool> orderByDescending;
-            tvChannelRepo.GetAvailableSortList(out sortBy, out orderByDescending);
+            actions.GetAvailableSortList(out sortBy, out orderByDescending);
 
             ViewBag.sortBy = sortBy.Select(item => new SelectListItem() { Text = item.Key, Value = item.Value });
             ViewBag.orderByDescending = orderByDescending.Select(item => new SelectListItem() { Text = item.Key, Value = item.Value.ToString() });
@@ -28,8 +29,8 @@ namespace ISP.Controllers
 
         public ActionResult IndexTableAjax(string sortBy = "Id", bool orderByDescending = false)
         {
-            IEnumerable<TVChannel> tvChannels = tvChannelRepo.GetAll();
-            IEnumerable<TVChannel> tvChannelsSorted = tvChannelRepo.Sort(tvChannels, sortBy, orderByDescending);
+            IEnumerable<TVChannel> tvChannels = actions.GetAll();
+            IEnumerable<TVChannel> tvChannelsSorted = actions.Sort(tvChannels, sortBy, orderByDescending);
             IEnumerable<TVChannelDetails> tvChannelsDetailsSorted = tvChannelsSorted.Select(tvChannel => new TVChannelDetails(tvChannel)).ToArray();
 
             return PartialView(tvChannelsDetailsSorted);
@@ -37,7 +38,7 @@ namespace ISP.Controllers
 
         public ActionResult DetailsAjax(Guid id)
         {
-            TVChannelDetails tvChannel = new TVChannelDetails(tvChannelRepo.Get(id));
+            TVChannelDetails tvChannel = new TVChannelDetails(actions.Get(id));
             return PartialView(tvChannel);
         }
 
@@ -56,13 +57,13 @@ namespace ISP.Controllers
                 return View(tvChannel);
             }
 
-            tvChannelRepo.Create(tvChannel);
+            actions.Create(tvChannel);
             return RedirectToAction("Index");
         }
 
         public ActionResult Edit(Guid id)
         {
-            TVChannel tvChannel = tvChannelRepo.Get(id);
+            TVChannel tvChannel = actions.Get(id);
             return View(tvChannel);
         }
 
@@ -75,7 +76,7 @@ namespace ISP.Controllers
                 return View(tvChannel);
             }
 
-            tvChannelRepo.Edit(tvChannel);
+            actions.Edit(tvChannel);
             return RedirectToAction("Index");
         }
 
@@ -83,7 +84,7 @@ namespace ISP.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Cancel(Guid id)
         {
-            tvChannelRepo.Cancel(id);
+            actions.Cancel(id);
             return RedirectToAction("Index");
         }
 
@@ -91,7 +92,7 @@ namespace ISP.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Renew(Guid id)
         {
-            tvChannelRepo.Renew(id);
+            actions.Renew(id);
             return RedirectToAction("Index");
         }
     }
