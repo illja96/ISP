@@ -86,13 +86,9 @@
     <Compile Include="ISPContext.cs" />
     <Compile Include="ISPContextSeed.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\InternetPackageRepo.cs" />
     <Compile Include="Repositories\InternetPackageRepository.cs" />
-    <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
-    <Compile Include="Repositories\TVChannelPackageRepo.cs" />
     <Compile Include="Repositories\TVChannelPackageRepository.cs" />
-    <Compile Include="Repositories\TVChannelRepo.cs" />
     <Compile Include="Repositories\TVChannelRepository.cs" />
     <Compile Include="ViewModels\InternetPackageDetails.cs" />
     <Compile Include="ViewModels\TVChannelDetails.cs" />
