@@ -11,9 +11,12 @@ namespace ISP.BLL.ModelActions
 {
     public class TVChannelPackageActions : ModelActionBase<TVChannelPackage>
     {
+        private RepositoryBase<TVChannel> tvChannelRepository;
+
         public TVChannelPackageActions()
         {
             repository = new TVChannelPackageRepository();
+            tvChannelRepository = new TVChannelRepository();
         }
 
         public override void Cancel(Guid id)
@@ -39,19 +42,19 @@ namespace ISP.BLL.ModelActions
 
         public override TVChannelPackage GetNotCanceled(Guid id)
         {
-            return repository.context.Set<TVChannelPackage>().First(item => !item.IsCanceled);
+            return repository.Get(item => item.Id == id && !item.IsCanceled);
         }
         public override IEnumerable<TVChannelPackage> GetAllNotCanceled()
         {
-            return repository.context.Set<TVChannelPackage>().Where(item => !item.IsCanceled);
+            return repository.GetAll(item => !item.IsCanceled);
         }
         public override IEnumerable<TVChannelPackage> GetAllNotCanceledOrderBy(Expression<Func<TVChannelPackage, object>> keySelector)
         {
-            return repository.context.Set<TVChannelPackage>().Where(item => !item.IsCanceled).OrderBy(keySelector);
+            return repository.GetAllOrderBy(item => !item.IsCanceled, keySelector);
         }
         public override IEnumerable<TVChannelPackage> GetAllNotCanceledOrderByDescending(Expression<Func<TVChannelPackage, object>> keySelector)
         {
-            return repository.context.Set<TVChannelPackage>().Where(item => !item.IsCanceled).OrderByDescending(keySelector);
+            return repository.GetAllOrderByDescending(item => !item.IsCanceled, keySelector);
         }
 
         public override void GetAvailableSortList(out Dictionary<string, string> sortBy, out Dictionary<string, bool> orderByDescending)
@@ -109,7 +112,7 @@ namespace ISP.BLL.ModelActions
             TVChannelPackage tvChannelPackage = Get(tvChannelPackageId);
             if (tvChannelPackage.Channels.Count(item => item.Id == tvChannelId) == 0)
             {
-                TVChannel tvChannel = repository.context.Set<TVChannel>().First(item => item.Id == tvChannelId);
+                TVChannel tvChannel = tvChannelRepository.Get(tvChannelId);
                 tvChannelPackage.Channels.Add(tvChannel);
                 Edit(tvChannelPackage);
             }
@@ -119,14 +122,14 @@ namespace ISP.BLL.ModelActions
             TVChannelPackage tvChannelPackage = Get(tvChannelPackageId);
             if (tvChannelPackage.Channels.Count(item => item.Id == tvChannelId) != 0)
             {
-                TVChannel tvChannel = repository.context.Set<TVChannel>().First(item => item.Id == tvChannelId);
+                TVChannel tvChannel = tvChannelRepository.Get(tvChannelId);
                 tvChannelPackage.Channels.Remove(tvChannel);
                 Edit(tvChannelPackage);
             }
         }
         public IEnumerable<TVChannel> GetAllChannelsExceptChannelsInPackage(Guid tvChannelPackageId)
         {
-            IEnumerable<TVChannel> allTVChannels = repository.context.Set<TVChannel>().ToArray();
+            IEnumerable<TVChannel> allTVChannels = tvChannelRepository.GetAll().ToArray();
             IEnumerable<TVChannel> tvChannelsFromPackage = Get(tvChannelPackageId).Channels.ToArray();
             return allTVChannels.Except(tvChannelsFromPackage);
         }

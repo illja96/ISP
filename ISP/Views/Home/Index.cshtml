@@ -1,31 +1,47 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "ISP";
 }
 
 <div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    <h1>ISP name</h1>
+    <p class="lead">
+        Добро пожаловать на сайт ISP name. Мы предоставляем широкий спектр ТВ и интернет услуг.
+        У нас вы можете подключиться к интернету, оформить пакет ТВ каналов или выбрать их самостоятельно.
+        ТВ вещание проводится как через кабель, так и по IPTV.
+    </p>
 </div>
 
 <div class="row">
     <div class="col-md-4">
-        <h2>Getting started</h2>
+        <h2>Интернет пакеты</h2>
         <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
+            Мы предоставляем большое количество интернет пакетов для разных типов пользователей!
+            Бюджетные пакеты для семей и студентов. Высокоростные пакеты для геймеров и дизайнеров.
         </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+        <p>
+            @Html.ActionLink("Подробнее", "Internet", null, new { @class = "btn btn-default" })
+        </p>
     </div>
     <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+        <h2>Пакеты ТВ каналов</h2>
+        <p>
+            Для вас мы сделали специальные подборки каналов по категориям.
+            Вы всегда найдете то, что подходит именно вам!
+        </p>
+        <br />
+        <p>
+            @Html.ActionLink("Подробнее", "TVPackage", null, new { @class = "btn btn-default" })
+        </p>
     </div>
     <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+        <h2>ТВ каналы в розницу</h2>
+        <p>
+            У вас есть любимый канал? Не хотите переплачивать за весь пакет?
+            Вы можете сэкономить оформив контракт только на некоторые из них.
+        </p>
+        <br />
+        <p>
+            @Html.ActionLink("Подробнее", "TVChannel", null, new { @class = "btn btn-default" })
+        </p>
     </div>
 </div>

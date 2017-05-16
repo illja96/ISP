@@ -5,31 +5,27 @@
     {
         @Html.AntiForgeryToken()
 
-        <ul class="nav navbar-nav navbar-right">
-            <li>
-                @if (User.IsInRole("Administrator"))
-                {
-                    @Html.ActionLink("Административная панель", "Index", "Admin")
-                }
-                @if (User.IsInRole("Support"))
-                {
+        <ul class="nav navbar-nav navbar-right" style="padding-top: 5px;">
+            @if (User.IsInRole("Administrator"))
+            {
+                @Html.ActionLink("Административная панель", "Index", "Admin", null, new { @class = "btn btn-primary" })
+            }
+            @if (User.IsInRole("Support"))
+            {
+                @Html.ActionLink("Панель поддержки", "Index", "AdminUser", null, new { @class = "btn btn-primary" })
+            }
+            @if (User.IsInRole("Subscriber"))
+            {
+                @Html.ActionLink("Личный кабинет", "Index", "Manage", null, new { @class = "btn btn-primary" })
+            }
 
-                }
-                @if (User.IsInRole("Subscriber"))
-                {
-                    @Html.ActionLink("Личный кабинет", "Index", "Manage")
-                }
-            </li>
-            <li>
-                <a href="javascript:document.getElementById('logoutForm').submit()">Выйти</a>
-            </li>
+            <input type="submit" class="btn btn-warning" value="Выйти" />
         </ul>
     }
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Войти", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    <ul class="nav navbar-nav navbar-right" style="padding-top: 5px;">
+        @Html.ActionLink("Войти", "Login", "Account", null, new { @class = "btn btn-primary", id = "loginLink" })
     </ul>
 }

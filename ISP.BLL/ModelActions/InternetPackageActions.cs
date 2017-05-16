@@ -39,19 +39,19 @@ namespace ISP.BLL.ModelActions
 
         public override InternetPackage GetNotCanceled(Guid id)
         {
-            return repository.context.Set<InternetPackage>().First(item => !item.IsCanceled);
+            return repository.Get(item => item.Id == id && !item.IsCanceled);
         }
         public override IEnumerable<InternetPackage> GetAllNotCanceled()
         {
-            return repository.context.Set<InternetPackage>().Where(item => !item.IsCanceled);
+            return repository.GetAll(item => !item.IsCanceled);
         }
         public override IEnumerable<InternetPackage> GetAllNotCanceledOrderBy(Expression<Func<InternetPackage, object>> keySelector)
         {
-            return repository.context.Set<InternetPackage>().Where(item => !item.IsCanceled).OrderBy(keySelector);
+            return repository.GetAllOrderBy(item => !item.IsCanceled, keySelector);
         }
         public override IEnumerable<InternetPackage> GetAllNotCanceledOrderByDescending(Expression<Func<InternetPackage, object>> keySelector)
         {
-            return repository.context.Set<InternetPackage>().Where(item => !item.IsCanceled).OrderByDescending(keySelector);
+            return repository.GetAllOrderByDescending(item => !item.IsCanceled, keySelector);
         }
 
         public override void GetAvailableSortList(out Dictionary<string, string> sortBy, out Dictionary<string, bool> orderByDescending)

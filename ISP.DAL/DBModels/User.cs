@@ -13,6 +13,17 @@ namespace ISP.DAL.DBModels
     public class User : IdentityUser
     {
         [Required]
+        [Display(Name = "Номер")]
+        public override string UserName { get; set; }
+
+        [Display(Name = "Email")]
+        public override string Email { get; set; }
+
+        [RegularExpression("[\\+]\\d{12}", ErrorMessage = "Требуется поле Телефон в формате: +380000000000")]
+        [Display(Name = "Телефон")]
+        public override string PhoneNumber { get; set; }
+
+        [Required]
         [Display(Name = "Имя")]
         public string FirstName { get; set; }
 
@@ -30,11 +41,13 @@ namespace ISP.DAL.DBModels
 
         [Required]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Дата рождения")]
         public DateTime DoB { get; set; }
 
         [Required]
         [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Дата регистрации")]
         public DateTime RegistrationDate { get; set; }
 
@@ -52,7 +65,7 @@ namespace ISP.DAL.DBModels
 
         [Display(Name = "Контракты на пакеты интернет услуг")]
         public virtual ICollection<InternetPackageContract> InternetPackageContracts { get; set; }
-        
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType

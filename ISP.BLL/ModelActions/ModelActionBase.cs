@@ -9,7 +9,7 @@ namespace ISP.BLL.ModelActions
 {
     public abstract class ModelActionBase<T> where T : class
     {
-        public RepositoryBase<T> repository;
+        protected RepositoryBase<T> repository;
 
         public abstract T GetNotCanceled(Guid id);
         public abstract IEnumerable<T> GetAllNotCanceled();

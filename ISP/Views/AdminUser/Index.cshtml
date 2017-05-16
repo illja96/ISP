@@ -1,0 +1,27 @@
+﻿@model IEnumerable<ISP.DAL.ViewModels.TVChannelDetails>
+
+@{
+    ViewBag.Title = "Список абонентов";
+}
+
+<div class="text-right">
+    @Html.ActionLink("Добавить", "Create", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Назад", "Index", "Admin", null, new { @class = "btn btn-default" })
+</div>
+<br />
+
+<div class="form-inline">
+    @using (Ajax.BeginForm("IndexTableAjax", new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "usersTable" }))
+    {
+        @Html.DropDownList("sortBy", (ViewData["sortBy"] as SelectList), new { @class = "form-control" })
+
+        @Html.DropDownList("orderByDescending", (ViewData["orderByDescending"] as SelectList), new { @class = "form-control" })
+
+        <input type="submit" class="btn btn-primary" value="Сортировать" />
+    }
+</div>
+<br />
+
+<div id="usersTable">
+    @Html.Action("IndexTableAjax")
+</div>

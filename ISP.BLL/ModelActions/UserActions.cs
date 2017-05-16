@@ -8,59 +8,66 @@ using System.Threading.Tasks;
 using System.Linq.Expressions;
 using ISP.DAL.Repositories;
 using ISP.DAL;
+using Microsoft.Owin.Host.SystemWeb;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Web;
 
 namespace ISP.BLL.ModelActions
 {
     public class UserActions
     {
-        public ISPContext context;
-        public ApplicationUserManager userManager;
+        private RepositoryBase<User> repository;
+        private RepositoryBase<ContractAddress> addressRepository;
+        private ApplicationUserManager userManager;
 
-        public UserActions(ApplicationUserManager userManager)
+        public UserActions()
         {
-            context = new ISPContext();
-            this.userManager = userManager;
-        }
-        public UserActions(ISPContext context, ApplicationUserManager userManager)
-        {
-            this.context = context;
-            this.userManager = userManager;
+            repository = new UserRepository();
+            addressRepository = new ContractAddressRepository();
+            userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
         }
 
-        public IdentityResult Create(User item, string password)
+        public IdentityResult Create(User item, string password, ContractAddress address)
         {
             User user = new User()
             {
+                UserName = repository.GetAll().Count().ToString(),
                 Email = item.Email,
-                UserName = context.Set<User>().Count().ToString(),
                 PhoneNumber = item.PhoneNumber,
                 FirstName = item.FirstName,
                 LastName = item.LastName,
                 MiddleName = item.MiddleName,
-                Balance = item.Balance
+                DoB = item.DoB.Date,
+                RegistrationDate = DateTime.UtcNow,
+                Balance = 0
             };
             IdentityResult result = userManager.Create(user, password);
             if (result.Succeeded)
             {
                 userManager.AddToRole(user.Id, "Subscriber");
+                address.SubscriberId = user.Id;
+                addressRepository.Create(address);
             }
             return result;
         }
         public void Edit(User item)
         {
-            context.Entry<User>(item).State = System.Data.Entity.EntityState.Modified;
-            context.SaveChanges();
+            repository.Edit(item);
         }
 
         public User Get(string emailOrPhoneOrNumber)
         {
-            return context.Set<User>().First(item => item.Email == emailOrPhoneOrNumber || item.PhoneNumber == emailOrPhoneOrNumber);
+            return repository.Get(item => item.Email == emailOrPhoneOrNumber || item.PhoneNumber == emailOrPhoneOrNumber || item.UserName == emailOrPhoneOrNumber);
+        }
+        public User GetById(string userId)
+        {
+            return repository.Get(item => item.Id == userId);
         }
         public IEnumerable<User> GetAll()
         {
-            return context.Set<User>();
+            return repository.GetAll();
         }
 
         public void GetAvailableSortList(out Dictionary<string, string> sortBy, out Dictionary<string, bool> orderByDescending)
@@ -133,28 +140,39 @@ namespace ISP.BLL.ModelActions
                     return items;
             }
         }
-
-        public IdentityResult ConfirmEmail(string id, string code)
+        
+        public void GetAvailableRoleList(out Dictionary<string, string> roles)
         {
-            return userManager.ConfirmEmail(id, code);
+            roles = new Dictionary<string, string>()
+            {
+                { "Администратор", "Administrator"},
+                { "Поддержка", "Support"},
+                { "Абонент", "Subscriber"}
+            };
         }
-        public IdentityResult ResetPassword(string id, string code, string password)
+
+        public IdentityResult ConfirmEmail(string userId, string code)
         {
-            User user = userManager.FindById(id);
+            return userManager.ConfirmEmail(userId, code);
+        }
+        public IdentityResult ResetPassword(string userId, string code, string password)
+        {
+            User user = userManager.FindById(userId);
             if (user == null)
             {
                 return null;
             }
-            return userManager.ResetPassword(id, code, password);
+            return userManager.ResetPassword(userId, code, password);
         }
-        public void ChangeRole(string id, string roleName)
+        public string GetRoleName(string userId)
         {
-            User user = userManager.FindById(id);
-            foreach(IdentityUserRole role in user.Roles)
-            {
-                string userRoleName = context.Roles.Find(role.RoleId).Name;
-                userManager.RemoveFromRole(user.Id, userRoleName);
-            }            
+            return userManager.GetRoles(userId).First();
+        }
+        public void ChangeRole(string userId, string roleName)
+        {
+            User user = userManager.FindById(userId);
+            IEnumerable<string> userRoles = userManager.GetRoles(user.Id);
+            userManager.RemoveFromRoles(user.Id, userRoles.ToArray());
             userManager.AddToRole(user.Id, roleName);
         }
     }

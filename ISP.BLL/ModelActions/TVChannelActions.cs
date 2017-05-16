@@ -57,19 +57,19 @@ namespace ISP.BLL.ModelActions
 
         public override TVChannel GetNotCanceled(Guid id)
         {
-            return repository.context.Set<TVChannel>().First(item => item.Id == id && !item.IsCanceled);
+            return repository.Get(item => item.Id == id && !item.IsCanceled);
         }
         public override IEnumerable<TVChannel> GetAllNotCanceled()
         {
-            return repository.context.Set<TVChannel>().Where(item => !item.IsCanceled);
+            return repository.GetAll(item => !item.IsCanceled);
         }
         public override IEnumerable<TVChannel> GetAllNotCanceledOrderBy(Expression<Func<TVChannel, object>> keySelector)
         {
-            return repository.context.Set<TVChannel>().Where(item => !item.IsCanceled).OrderBy(keySelector);
+            return repository.GetAllOrderBy(item => !item.IsCanceled, keySelector);
         }
         public override IEnumerable<TVChannel> GetAllNotCanceledOrderByDescending(Expression<Func<TVChannel, object>> keySelector)
         {
-            return repository.context.Set<TVChannel>().Where(item => !item.IsCanceled).OrderByDescending(keySelector);
+            return repository.GetAllOrderByDescending(item => !item.IsCanceled, keySelector);
         }
 
         public override void GetAvailableSortList(out Dictionary<string, string> sortBy, out Dictionary<string, bool> orderByDescending)

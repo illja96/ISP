@@ -296,10 +296,13 @@
     <Content Include="Views\AdminTVChannelPackage\Index.cshtml" />
     <Content Include="Views\AdminTVChannelPackage\IndexTableAjax.cshtml" />
     <Content Include="Views\AdminTVChannelPackage\Details.cshtml" />
+    <Content Include="Views\AdminUser\Create.cshtml" />
+    <Content Include="Views\AdminUser\Edit.cshtml" />
+    <Content Include="Views\AdminUser\Index.cshtml" />
+    <Content Include="Views\AdminUser\IndexTableAjax.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\AdminUser\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

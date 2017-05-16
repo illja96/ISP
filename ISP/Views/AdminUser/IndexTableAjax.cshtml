@@ -1,0 +1,90 @@
+﻿@model IEnumerable<ISP.DAL.ViewModels.UserDetails>
+
+<table class="table table-striped table-hover table-bordered">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Balance)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DoB)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RegistrationDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Contracts)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContractsCanceled)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContractsTotal)
+        </th>
+    </tr>
+
+    @foreach (var user in Model)
+    {
+        string trClasses = "";
+        if (user.Balance <= 0)
+        {
+            trClasses = "danger";
+        }
+        if (user.Role == "Administrator" || user.Role == "Support")
+        {
+            trClasses = "info";
+        }
+        string editButtonClasses = "btn btn-xs btn-warning";
+        if (user.Role == "Administrator" && !User.IsInRole("Administrator"))
+        {
+            editButtonClasses += " disabled";
+        }
+
+        <tr class="@trClasses">
+            <td>
+                @Html.DisplayFor(model => user.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => user.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => user.Balance)
+            </td>
+            <td>
+                @Html.DisplayFor(model => user.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(model => user.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(model => user.DoB)
+            </td>
+            <td>
+                @Html.DisplayFor(model => user.RegistrationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(model => user.Contracts)
+            </td>
+            <td>
+                @Html.DisplayFor(model => user.ContractsCanceled)
+            </td>
+            <td>
+                @Html.DisplayFor(model => user.ContractsTotal)
+            </td>
+            <td>
+                @Html.ActionLink("Редактировать", "Edit", new { id = user.Id }, new { @class = editButtonClasses })
+            </td>
+        </tr>
+    }
+</table>
