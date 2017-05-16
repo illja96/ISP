@@ -11,15 +11,6 @@ namespace ISP.BLL.ModelActions
     {
         public RepositoryBase<T> repository;
 
-        public ModelActionBase()
-        {
-
-        }
-        public ModelActionBase(RepositoryBase<T> repository)
-        {
-            this.repository = repository;
-        }
-
         public abstract T GetNotCanceled(Guid id);
         public abstract IEnumerable<T> GetAllNotCanceled();
         public abstract IEnumerable<T> GetAllNotCanceledOrderBy(System.Linq.Expressions.Expression<Func<T, object>> keySelector);

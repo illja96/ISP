@@ -27,7 +27,7 @@ namespace ISP.DAL
 
             var userStore = new UserStore<User>(context);
             var userManager = new UserManager<User>(userStore);
-            var user = new User
+            var user = new User()
             {
                 UserName = "root",
                 Email = "root@localhost.localhost",

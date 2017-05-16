@@ -82,6 +82,7 @@
     <Compile Include="ModelActions\ModelActionBase.cs" />
     <Compile Include="ModelActions\TVChannelActions.cs" />
     <Compile Include="ModelActions\TVChannelPackageActions.cs" />
+    <Compile Include="ModelActions\UserActions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
