@@ -302,10 +302,10 @@
     <Content Include="Views\AdminUser\Index.cshtml" />
     <Content Include="Views\AdminUser\IndexTableAjax.cshtml" />
     <Content Include="Views\Home\TVChannelPackage.cshtml" />
+    <Content Include="Views\Home\InternetPackage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\HomeDownload\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

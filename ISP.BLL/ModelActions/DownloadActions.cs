@@ -27,6 +27,23 @@ namespace ISP.BLL.ModelActions
             streamWriter.Flush();
             return stream;
         }
+        public Stream DownloadTXT(IEnumerable<InternetPackage> items)
+        {
+            MemoryStream stream = new MemoryStream();
+            StreamWriter streamWriter = new StreamWriter(stream, Encoding.UTF8);
+
+            streamWriter.WriteLine("Информация предоставлена (UTC): {0}", DateTime.UtcNow);
+            foreach (InternetPackage internetPackage in items)
+            {
+                streamWriter.WriteLine("\tНазвание пакета интернет услуг: {0}", internetPackage.Name);
+                streamWriter.WriteLine("\tСкорость приёма: {0}", internetPackage.DownloadSpeed);
+                streamWriter.WriteLine("\tСкорость отдачи: {0}", internetPackage.UploadSpeed);
+                streamWriter.WriteLine("\tСтоимость в месяц: {0}", internetPackage.Price);
+            }
+
+            streamWriter.Flush();
+            return stream;
+        }
         public Stream DownloadTXT(TVChannelPackage item)
         {
             MemoryStream stream = new MemoryStream();
@@ -56,6 +73,19 @@ namespace ISP.BLL.ModelActions
                 return null;
 
             MemoryStream docxFileStream = (DownloadDOCX(item) as MemoryStream);
+            byte[] pdfFile = docxConverter.DocxToPdfConvertByte(docxFileStream.ToArray());
+            MemoryStream pdfFileStream = new MemoryStream(pdfFile);
+
+            return pdfFileStream;
+        }
+        public Stream DownloadPDF(IEnumerable<InternetPackage> items)
+        {
+            PdfMetamorphosis docxConverter = new PdfMetamorphosis();
+
+            if (docxConverter == null)
+                return null;
+
+            MemoryStream docxFileStream = (DownloadDOCX(items) as MemoryStream);
             byte[] pdfFile = docxConverter.DocxToPdfConvertByte(docxFileStream.ToArray());
             MemoryStream pdfFileStream = new MemoryStream(pdfFile);
 
@@ -93,19 +123,54 @@ namespace ISP.BLL.ModelActions
             docx.Save(stream, SaveOptions.DocxDefault);
             return stream;
         }
+        public Stream DownloadDOCX(IEnumerable<InternetPackage> items)
+        {
+            MemoryStream stream = new MemoryStream();
+
+            DocumentCore docx = new DocumentCore();
+            Section section = new Section(docx);
+            docx.Sections.Add(section);
+            section.PageSetup.PaperType = PaperType.A4;
+
+            section.Blocks.Add(new Paragraph(docx, string.Format("Информация предоставлена (UTC): {0}", DateTime.UtcNow)));
+
+            Table table = new Table(docx);
+            table.TableFormat.Alignment = HorizontalAlignment.Left;
+
+            TableRow tableRowHeader = new TableRow(docx);
+            TableCell tableRowCellNameHeader = AddCellToDOCXTable("Название пакета интернет услуг", ref docx, ref tableRowHeader);
+            TableCell tableRowCellDownloadSpeedHeader = AddCellToDOCXTable("Скорость приёма", ref docx, ref tableRowHeader);
+            TableCell tableRowCellUploadSpeedHeader = AddCellToDOCXTable("Скорость отдачи", ref docx, ref tableRowHeader);
+            TableCell tableRowCellPriceHeader = AddCellToDOCXTable("Стоимость в месяц", ref docx, ref tableRowHeader);
+            table.Rows.Add(tableRowHeader);
+
+            foreach (InternetPackage internetPackage in items)
+            {
+                TableRow tableRow = new TableRow(docx);
+                TableCell tableRowCellName = AddCellToDOCXTable(internetPackage.Name, ref docx, ref tableRow);
+                TableCell tableRowCellDownloadSpeed = AddCellToDOCXTable(internetPackage.DownloadSpeed.ToString(), ref docx, ref tableRow);
+                TableCell tableRowCellUploadSpeed = AddCellToDOCXTable(internetPackage.UploadSpeed.ToString(), ref docx, ref tableRow);
+                TableCell tableRowCellPrice = AddCellToDOCXTable(internetPackage.Price.ToString(), ref docx, ref tableRow);
+                table.Rows.Add(tableRow);
+            }
+            section.Blocks.Add(table);
+
+            docx.Save(stream, SaveOptions.DocxDefault);
+            return stream;
+        }
         public Stream DownloadDOCX(TVChannelPackage item)
         {
             MemoryStream stream = new MemoryStream();
 
             DocumentCore docx = new DocumentCore();
-            Section textSection = new Section(docx);
-            docx.Sections.Add(textSection);
-            textSection.PageSetup.PaperType = PaperType.A4;
-            textSection.Blocks.Add(new Paragraph(docx, string.Format("Информация предоставлена (UTC): {0}", DateTime.UtcNow)));
-            textSection.Blocks.Add(new Paragraph(docx, string.Format("Название пакета ТВ: {0}", item.Name)));
-            textSection.Blocks.Add(new Paragraph(docx, string.Format("Количество каналов в пакете: {0}", item.Channels.Count())));
-            textSection.Blocks.Add(new Paragraph(docx, string.Format("Стоимость в месяц: {0}", item.Price)));
-            textSection.Blocks.Add(new Paragraph(docx, string.Format("Список каналов:")));
+            Section section = new Section(docx);
+            docx.Sections.Add(section);
+            section.PageSetup.PaperType = PaperType.A4;
+            section.Blocks.Add(new Paragraph(docx, string.Format("Информация предоставлена (UTC): {0}", DateTime.UtcNow)));
+            section.Blocks.Add(new Paragraph(docx, string.Format("Название пакета ТВ: {0}", item.Name)));
+            section.Blocks.Add(new Paragraph(docx, string.Format("Количество каналов в пакете: {0}", item.Channels.Count())));
+            section.Blocks.Add(new Paragraph(docx, string.Format("Стоимость в месяц: {0}", item.Price)));
+            section.Blocks.Add(new Paragraph(docx, string.Format("Список каналов:")));
 
             Table table = new Table(docx);
             table.TableFormat.Alignment = HorizontalAlignment.Left;
@@ -124,7 +189,7 @@ namespace ISP.BLL.ModelActions
                 TableCell tableRowCellTV = AddCellToDOCXTable((tvChannel.IsTV ? "Да" : "Нет"), ref docx, ref tableRow);
                 table.Rows.Add(tableRow);
             }
-            textSection.Blocks.Add(table);
+            section.Blocks.Add(table);
 
             docx.Save(stream, SaveOptions.DocxDefault);
             return stream;

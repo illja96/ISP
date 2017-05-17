@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ISP.DAL.ViewModels.InternetPackageDetails>
+@{
+    ViewBag.Title = "Пакеты интернет услуг";
+}
+
+<div class="text-right">
+    <div class="btn-group">
+        @Html.ActionLink("Скачать", "DownloadInternetPackages", "HomeDownload", new { @format = "txt" }, new { @class = "btn btn-info" })
+        <a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li>
+                @Html.ActionLink("TXT", "DownloadInternetPackages", "HomeDownload", new { @format = "txt" }, null)
+            </li>
+            <li>
+                @Html.ActionLink("PDF", "DownloadInternetPackages", "HomeDownload", new { @format = "pdf" }, null)
+            </li>
+            <li>
+                @Html.ActionLink("DOCX", "DownloadInternetPackages", "HomeDownload", new { @format = "docx" }, null)
+            </li>
+        </ul>
+    </div>
+</div>
+<br />
+
+<table class="table table-striped table-hover table-bordered">
+    <tr>
+        <th>
+            @Html.LabelFor(model => model.First().Name)
+        </th>
+        <th>
+            @Html.LabelFor(model => model.First().DownloadSpeed)
+        </th>
+        <th>
+            @Html.LabelFor(model => model.First().UploadSpeed)
+        </th>
+        <th>
+            @Html.LabelFor(model => model.First().Price)
+        </th>
+    </tr>
+    @foreach (var internetPackage in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => internetPackage.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(model => internetPackage.DownloadSpeed)
+            </td>
+            <td>
+                @Html.DisplayFor(model => internetPackage.UploadSpeed)
+            </td>
+            <td>
+                @Html.DisplayFor(model => internetPackage.Price)
+            </td>
+        </tr>
+    }
+</table>

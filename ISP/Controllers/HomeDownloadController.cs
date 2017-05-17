@@ -27,7 +27,12 @@ namespace ISP.Controllers
             InternetPackage item = internetPackageActions.GetNotCanceled(id);
             return DownloadInternetPackage(item, format);
         }
-        private FileResult DownloadInternetPackage(InternetPackage item, string format = "")
+        public FileResult DownloadInternetPackages(string format = "txt")
+        {
+            IEnumerable<InternetPackage> items = internetPackageActions.GetAllNotCanceled();
+            return DownloadInternetPackages(items, format);
+        }
+        private FileResult DownloadInternetPackage(InternetPackage item, string format = "txt")
         {
             Stream stream;
             string fileName;
@@ -49,6 +54,32 @@ namespace ISP.Controllers
                 default:
                     fileName = string.Format("ПакетИнтернетУслуг{0}.txt", item.Name);
                     stream = action.DownloadTXT(item);
+                    stream.Seek(0, 0);
+                    return File(stream, "text/plain", fileName);
+            }
+        }
+        private FileResult DownloadInternetPackages(IEnumerable<InternetPackage> items, string format = "txt")
+        {
+            Stream stream;
+            string fileName;
+
+            switch (format)
+            {
+                case "pdf":
+                    fileName = "ПакетыИнтернетУслуг.pdf";
+                    stream = action.DownloadPDF(items);
+                    stream.Seek(0, 0);
+                    return File(stream, "application/pdf", fileName);
+
+                case "docx":
+                    fileName = "ПакетыИнтернетУслуг.docx";
+                    stream = action.DownloadDOCX(items);
+                    stream.Seek(0, 0);
+                    return File(stream, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", fileName);
+
+                default:
+                    fileName = "ПакетыИнтернетУслуг.txt";
+                    stream = action.DownloadTXT(items);
                     stream.Seek(0, 0);
                     return File(stream, "text/plain", fileName);
             }
