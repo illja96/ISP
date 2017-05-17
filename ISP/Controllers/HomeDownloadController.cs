@@ -34,6 +34,18 @@ namespace ISP.Controllers
 
             switch (format)
             {
+                case "pdf":
+                    fileName = string.Format("ПакетИнтернетУслуг{0}.pdf", item.Name);
+                    stream = action.DownloadPDF(item);
+                    stream.Seek(0, 0);
+                    return File(stream, "application/pdf", fileName);
+
+                case "docx":
+                    fileName = string.Format("ПакетИнтернетУслуг{0}.docx", item.Name);
+                    stream = action.DownloadDOCX(item);
+                    stream.Seek(0, 0);
+                    return File(stream, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", fileName);
+
                 default:
                     fileName = string.Format("ПакетИнтернетУслуг{0}.txt", item.Name);
                     stream = action.DownloadTXT(item);
@@ -54,6 +66,18 @@ namespace ISP.Controllers
 
             switch (format)
             {
+                case "pdf":
+                    fileName = string.Format("ПакетТВ{0}.pdf", item.Name);
+                    stream = action.DownloadPDF(item);
+                    stream.Seek(0, 0);
+                    return File(stream, "application/pdf", fileName);
+
+                case "docx":
+                    fileName = string.Format("ПакетТВ{0}.docx", item.Name);
+                    stream = action.DownloadDOCX(item);
+                    stream.Seek(0, 0);
+                    return File(stream, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", fileName);
+
                 default:
                     fileName = string.Format("ПакетТВ{0}.txt", item.Name);
                     stream = action.DownloadTXT(item);

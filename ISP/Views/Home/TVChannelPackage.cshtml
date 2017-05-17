@@ -32,13 +32,13 @@
                         <a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li>
-                                @Html.ActionLink("TXT", "DownloadTVChannelPackage", "HomeDownload", new { @id = tvChannelPackage.Id, @format = "txt" })
+                                @Html.ActionLink("TXT", "DownloadTVChannelPackage", "HomeDownload", new { @id = tvChannelPackage.Id, @format = "txt" }, null)
                             </li>
                             <li>
-                                @Html.ActionLink("PDF", "DownloadTVChannelPackage", "HomeDownload", new { @id = tvChannelPackage.Id, @format = "pdf" })
+                                @Html.ActionLink("PDF", "DownloadTVChannelPackage", "HomeDownload", new { @id = tvChannelPackage.Id, @format = "pdf" }, null)
                             </li>
                             <li>
-                                @Html.ActionLink("DOCX", "DownloadTVChannelPackage", "HomeDownload", new { @id = tvChannelPackage.Id, @format = "docx" })
+                                @Html.ActionLink("DOCX", "DownloadTVChannelPackage", "HomeDownload", new { @id = tvChannelPackage.Id, @format = "docx" }, null)
                             </li>
                         </ul>
                     </div>
