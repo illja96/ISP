@@ -1,0 +1,100 @@
+﻿@model IEnumerable<ISP.DAL.ViewModels.TVChannelPackageDetails>
+@{
+    ViewBag.Title = "Пакеты ТВ";
+}
+
+<br />
+<ul class="nav nav-tabs">
+    @{
+        for (int tvChannelPackageIndex = 0; tvChannelPackageIndex < Model.Count(); tvChannelPackageIndex++)
+        {
+            ISP.DAL.ViewModels.TVChannelPackageDetails tvChannelPackage = Model.ElementAt(tvChannelPackageIndex);
+            string liClass = (tvChannelPackageIndex == 0 ? "active" : "");
+            string ariaExpanded = (tvChannelPackageIndex == 0 ? "true" : "false");
+            string tvChannelPackageName = Model.ElementAt(tvChannelPackageIndex).Name;
+            string tvChannelPackageHref = string.Format("#tvChannelPackage{0}", tvChannelPackageIndex);
+            <li class="@liClass"><a href="@tvChannelPackageHref" data-toggle="tab" aria-expanded="@ariaExpanded">@tvChannelPackageName</a></li>
+        }
+    }
+</ul>
+<div class="tab-content">
+    @{
+        for (int tvChannelPackageIndex = 0; tvChannelPackageIndex < Model.Count(); tvChannelPackageIndex++)
+        {
+            ISP.DAL.ViewModels.TVChannelPackageDetails tvChannelPackage = Model.ElementAt(tvChannelPackageIndex);
+            string divClass = (tvChannelPackageIndex == 0 ? "tab-pane fade active in" : "tab-pane fade");
+            string divId = string.Format("tvChannelPackage{0}", tvChannelPackageIndex);
+            <div class="@divClass" id="@divId">
+                <br />
+                <div class="text-right">
+                    <div class="btn-group">
+                        @Html.ActionLink("Скачать", "DownloadTVChannelPackage", "HomeDownload", new { @id = tvChannelPackage.Id, @format = "txt" }, new { @class = "btn btn-info" })
+                        <a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                @Html.ActionLink("TXT", "DownloadTVChannelPackage", "HomeDownload", new { @id = tvChannelPackage.Id, @format = "txt" })
+                            </li>
+                            <li>
+                                @Html.ActionLink("PDF", "DownloadTVChannelPackage", "HomeDownload", new { @id = tvChannelPackage.Id, @format = "pdf" })
+                            </li>
+                            <li>
+                                @Html.ActionLink("DOCX", "DownloadTVChannelPackage", "HomeDownload", new { @id = tvChannelPackage.Id, @format = "docx" })
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.LabelFor(model => tvChannelPackage.Name)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => tvChannelPackage.Name)
+                    </dd>
+
+                    <dt>
+                        @Html.LabelFor(model => tvChannelPackage.ChannelsCount)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => tvChannelPackage.ChannelsCount)
+                    </dd>
+
+                    <dt>
+                        @Html.LabelFor(model => tvChannelPackage.Price)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => tvChannelPackage.Price)
+                    </dd>
+                </dl>
+
+                <table class="table table-striped table-hover table-bordered">
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => tvChannelPackage.Channels.First().Name)
+                        </th>
+                        <th>
+                            @Html.LabelFor(model => tvChannelPackage.Channels.First().IsIPTV)
+                        </th>
+                        <th>
+                            @Html.LabelFor(model => tvChannelPackage.Channels.First().IsTV)
+                        </th>
+                    </tr>
+
+                    @foreach (var tvChannel in tvChannelPackage.Channels.Where(item => !item.IsCanceled))
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(model => tvChannel.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => tvChannel.IsIPTV)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => tvChannel.IsTV)
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        }
+    }
+</div>

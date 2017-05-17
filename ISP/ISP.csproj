@@ -193,6 +193,7 @@
     <Compile Include="Controllers\AdminTVChannelPackageController.cs" />
     <Compile Include="Controllers\AdminUserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HomeDownloadController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -300,9 +301,11 @@
     <Content Include="Views\AdminUser\Edit.cshtml" />
     <Content Include="Views\AdminUser\Index.cshtml" />
     <Content Include="Views\AdminUser\IndexTableAjax.cshtml" />
+    <Content Include="Views\Home\TVChannelPackage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\HomeDownload\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

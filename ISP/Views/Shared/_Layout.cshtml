@@ -25,16 +25,16 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("ISP name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("ISP name", "Index", "Home", null, new { @class = "navbar-brand" })
             </div>
 
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Интернет", "Internet", "Home")</li>
+                    <li>@Html.ActionLink("Интернет", "InternetPackage", "Home")</li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Телевидение<span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li>@Html.ActionLink("Пакеты ТВ", "TVPackage", "Home")</li>
+                            <li>@Html.ActionLink("Пакеты ТВ", "TVChannelPackage", "Home")</li>
                             <li>@Html.ActionLink("ТВ каналы", "TVChannel", "Home")</li>
                         </ul>
                     </li>
@@ -64,7 +64,7 @@
 
         <footer>            
             <a href="https://ivaxor.com"><img src="~/Content/banner_product_of_black.png" alt="Product of IVAXOR" style="float: right; display: inline-block;" /></a>
-            <p>&copy; 2017 - Internet Service Provider for EPAM training. Illia Khovanskyi</p>
+            <p>&copy; 2017 - Internet Service Provider for EPAM training by Illia Khovanskyi</p>
         </footer>
     </div>
 </body>

@@ -91,9 +91,10 @@ namespace ISP.DAL
                     {
                         Name = tvChannelInPackage,
                         Price = tvChannelPackagesPrice[tvChannelsInPackage.Key],
-                        IsTV = rand.NextDouble() > 0.25,
-                        IsIPTV = rand.NextDouble() > 0.5
+                        IsIPTV = rand.NextDouble() > 0.5,
+                        IsTV = rand.NextDouble() > 0.25
                     };
+                    tvChannel.IsCanceled = (!tvChannel.IsTV && !tvChannel.IsIPTV ? true : false);
                     tvChannelPackage.Channels.Add(tvChannel);
                 }
 
