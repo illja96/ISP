@@ -303,6 +303,7 @@
     <Content Include="Views\AdminUser\IndexTableAjax.cshtml" />
     <Content Include="Views\Home\TVChannelPackage.cshtml" />
     <Content Include="Views\Home\InternetPackage.cshtml" />
+    <Content Include="Views\Home\TVChannel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

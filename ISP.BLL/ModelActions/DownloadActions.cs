@@ -39,6 +39,27 @@ namespace ISP.BLL.ModelActions
                 streamWriter.WriteLine("\tСкорость приёма: {0}", internetPackage.DownloadSpeed);
                 streamWriter.WriteLine("\tСкорость отдачи: {0}", internetPackage.UploadSpeed);
                 streamWriter.WriteLine("\tСтоимость в месяц: {0}", internetPackage.Price);
+                streamWriter.WriteLine();
+            }
+
+            streamWriter.Flush();
+            return stream;
+        }
+        public Stream DownloadTXT(IEnumerable<TVChannel> items)
+        {
+            MemoryStream stream = new MemoryStream();
+            StreamWriter streamWriter = new StreamWriter(stream, Encoding.UTF8);
+
+            streamWriter.WriteLine("Информация предоставлена (UTC): {0}", DateTime.UtcNow);
+            foreach (TVChannel tvChannel in items)
+            {
+                string packages = string.Join(",", tvChannel.Packages.Select(item => item.Name));
+                streamWriter.WriteLine("\tНазвание ТВ канала: {0}", tvChannel.Name);
+                streamWriter.WriteLine("\tНаличие IPTV: {0}", (tvChannel.IsIPTV ? "Да" : "Нет"));
+                streamWriter.WriteLine("\tНаличие TP: {0}", (tvChannel.IsIPTV ? "Да" : "Нет"));
+                streamWriter.WriteLine("\tВходит в пакеты: {0}", packages);
+                streamWriter.WriteLine("\tСтоимость в месяц: {0}", tvChannel.Price);
+                streamWriter.WriteLine();
             }
 
             streamWriter.Flush();
@@ -79,6 +100,19 @@ namespace ISP.BLL.ModelActions
             return pdfFileStream;
         }
         public Stream DownloadPDF(IEnumerable<InternetPackage> items)
+        {
+            PdfMetamorphosis docxConverter = new PdfMetamorphosis();
+
+            if (docxConverter == null)
+                return null;
+
+            MemoryStream docxFileStream = (DownloadDOCX(items) as MemoryStream);
+            byte[] pdfFile = docxConverter.DocxToPdfConvertByte(docxFileStream.ToArray());
+            MemoryStream pdfFileStream = new MemoryStream(pdfFile);
+
+            return pdfFileStream;
+        }
+        public Stream DownloadPDF(IEnumerable<TVChannel> items)
         {
             PdfMetamorphosis docxConverter = new PdfMetamorphosis();
 
@@ -158,6 +192,44 @@ namespace ISP.BLL.ModelActions
             docx.Save(stream, SaveOptions.DocxDefault);
             return stream;
         }
+        public Stream DownloadDOCX(IEnumerable<TVChannel> items)
+        {
+            MemoryStream stream = new MemoryStream();
+
+            DocumentCore docx = new DocumentCore();
+            Section section = new Section(docx);
+            docx.Sections.Add(section);
+            section.PageSetup.PaperType = PaperType.A4;
+
+            section.Blocks.Add(new Paragraph(docx, string.Format("Информация предоставлена (UTC): {0}", DateTime.UtcNow)));
+
+            Table table = new Table(docx);
+            table.TableFormat.Alignment = HorizontalAlignment.Left;
+
+            TableRow tableRowHeader = new TableRow(docx);
+            TableCell tableRowCellNameHeader = AddCellToDOCXTable("Название ТВ канала", ref docx, ref tableRowHeader);
+            TableCell tableRowCellIPTVHeader = AddCellToDOCXTable("Наличие IPTV", ref docx, ref tableRowHeader);
+            TableCell tableRowCellTVHeader = AddCellToDOCXTable("Наличие TV", ref docx, ref tableRowHeader);
+            TableCell tableRowCellPackagesHeader = AddCellToDOCXTable("Входит в пакеты", ref docx, ref tableRowHeader);
+            TableCell tableRowCellPriceHeader = AddCellToDOCXTable("Стоимость в месяц", ref docx, ref tableRowHeader);
+            table.Rows.Add(tableRowHeader);
+
+            foreach (TVChannel tvChannel in items)
+            {
+                TableRow tableRow = new TableRow(docx);
+                string packages = string.Join(",", tvChannel.Packages.Select(item => item.Name));
+                TableCell tableRowCellName = AddCellToDOCXTable(tvChannel.Name, ref docx, ref tableRow);
+                TableCell tableRowCellIPTV = AddCellToDOCXTable((tvChannel.IsIPTV ? "Да" : "Нет"), ref docx, ref tableRow);
+                TableCell tableRowCellTV = AddCellToDOCXTable((tvChannel.IsIPTV ? "Да" : "Нет"), ref docx, ref tableRow);
+                TableCell tableRowCellPackages = AddCellToDOCXTable(packages, ref docx, ref tableRow);
+                TableCell tableRowCellPrice = AddCellToDOCXTable(tvChannel.Price.ToString(), ref docx, ref tableRow);
+                table.Rows.Add(tableRow);
+            }
+            section.Blocks.Add(table);
+
+            docx.Save(stream, SaveOptions.DocxDefault);
+            return stream;
+        }
         public Stream DownloadDOCX(TVChannelPackage item)
         {
             MemoryStream stream = new MemoryStream();
@@ -199,12 +271,12 @@ namespace ISP.BLL.ModelActions
             TableCell tableRowCell = new TableCell(docx);
             tableRowCell.CellFormat.Borders.SetBorders(MultipleBorderTypes.Outside, BorderStyle.Single, Color.Black, 1.0);
             tableRow.Cells.Add(tableRowCell);
-            Paragraph p = new Paragraph(docx);
-            p.ParagraphFormat.Alignment = HorizontalAlignment.Center;
-            p.ParagraphFormat.SpaceBefore = LengthUnitConverter.Convert(3, LengthUnit.Millimeter, LengthUnit.Point);
-            p.ParagraphFormat.SpaceAfter = LengthUnitConverter.Convert(3, LengthUnit.Millimeter, LengthUnit.Point); ;
-            p.Content.Start.Insert(String.Format("{0}", text));
-            tableRowCell.Blocks.Add(p);
+            Paragraph paragraph = new Paragraph(docx);
+            paragraph.ParagraphFormat.Alignment = HorizontalAlignment.Center;
+            paragraph.ParagraphFormat.SpaceBefore = LengthUnitConverter.Convert(3, LengthUnit.Millimeter, LengthUnit.Point);
+            paragraph.ParagraphFormat.SpaceAfter = LengthUnitConverter.Convert(3, LengthUnit.Millimeter, LengthUnit.Point); ;
+            paragraph.Content.Start.Insert(String.Format("{0}", text));
+            tableRowCell.Blocks.Add(paragraph);
 
             return tableRowCell;
         }

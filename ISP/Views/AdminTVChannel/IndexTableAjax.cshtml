@@ -62,7 +62,7 @@
                     using (Html.BeginForm("Cancel", "AdminTVChannel", new { id = tvChannel.Id }))
                     {
                         @Html.AntiForgeryToken()
-                        <input type="submit" class="btn btn-xs btn-success" value="Аннулировать" />
+                        <input type="submit" class="btn btn-xs btn-danger" value="Аннулировать" />
                     }
                 }
             </td>

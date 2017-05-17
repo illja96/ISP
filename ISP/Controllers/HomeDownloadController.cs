@@ -13,27 +13,20 @@ namespace ISP.Controllers
     {
         private DownloadActions action;
         private InternetPackageActions internetPackageActions;
+        private TVChannelActions tvChannelActions;
         private TVChannelPackageActions tvChannelPackageActions;
 
         public HomeDownloadController()
         {
             action = new DownloadActions();
             internetPackageActions = new InternetPackageActions();
+            tvChannelActions = new TVChannelActions();
             tvChannelPackageActions = new TVChannelPackageActions();
         }
 
         public FileResult DownloadInternetPackage(Guid id, string format = "txt")
         {
             InternetPackage item = internetPackageActions.GetNotCanceled(id);
-            return DownloadInternetPackage(item, format);
-        }
-        public FileResult DownloadInternetPackages(string format = "txt")
-        {
-            IEnumerable<InternetPackage> items = internetPackageActions.GetAllNotCanceled();
-            return DownloadInternetPackages(items, format);
-        }
-        private FileResult DownloadInternetPackage(InternetPackage item, string format = "txt")
-        {
             Stream stream;
             string fileName;
 
@@ -58,8 +51,9 @@ namespace ISP.Controllers
                     return File(stream, "text/plain", fileName);
             }
         }
-        private FileResult DownloadInternetPackages(IEnumerable<InternetPackage> items, string format = "txt")
+        public FileResult DownloadInternetPackages(string format = "txt")
         {
+            IEnumerable<InternetPackage> items = internetPackageActions.GetAllNotCanceled();
             Stream stream;
             string fileName;
 
@@ -85,13 +79,37 @@ namespace ISP.Controllers
             }
         }
 
+        public FileResult DownloadTVChannels(string format = "txt")
+        {
+            IEnumerable<TVChannel> items = tvChannelActions.GetAllNotCanceled();
+            Stream stream;
+            string fileName;
+
+            switch (format)
+            {
+                case "pdf":
+                    fileName = "ТВканалы.pdf";
+                    stream = action.DownloadPDF(items);
+                    stream.Seek(0, 0);
+                    return File(stream, "application/pdf", fileName);
+
+                case "docx":
+                    fileName = "ТВканалы.docx";
+                    stream = action.DownloadDOCX(items);
+                    stream.Seek(0, 0);
+                    return File(stream, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", fileName);
+
+                default:
+                    fileName = "ТВканалы.txt";
+                    stream = action.DownloadTXT(items);
+                    stream.Seek(0, 0);
+                    return File(stream, "text/plain", fileName);
+            }
+        }
+
         public FileResult DownloadTVChannelPackage(Guid id, string format = "txt")
         {
             TVChannelPackage item = tvChannelPackageActions.GetNotCanceled(id);
-            return DownloadTVChannelPackage(item, format);
-        }
-        private FileResult DownloadTVChannelPackage(TVChannelPackage item, string format = "txt")
-        {
             Stream stream;
             string fileName;
 

@@ -1,0 +1,62 @@
+﻿@model IEnumerable<ISP.DAL.ViewModels.TVChannelDetails>
+@{
+    ViewBag.Title = "ТВ каналы";
+}
+
+<div class="text-right">
+    <div class="btn-group">
+        @Html.ActionLink("Скачать", "DownloadTVChannels", "HomeDownload", new { @format = "txt" }, new { @class = "btn btn-info" })
+        <a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li>
+                @Html.ActionLink("TXT", "DownloadTVChannels", "HomeDownload", new { @format = "txt" }, null)
+            </li>
+            <li>
+                @Html.ActionLink("PDF", "DownloadTVChannels", "HomeDownload", new { @format = "pdf" }, null)
+            </li>
+            <li>
+                @Html.ActionLink("DOCX", "DownloadTVChannels", "HomeDownload", new { @format = "docx" }, null)
+            </li>
+        </ul>
+    </div>
+</div>
+<br />
+<table class="table table-striped table-hover table-bordered">
+    <tr>
+        <th>
+            @Html.LabelFor(model => Model.First().Name)
+        </th>
+        <th>
+            @Html.LabelFor(model => Model.First().IsIPTV)
+        </th>
+        <th>
+            @Html.LabelFor(model => Model.First().IsTV)
+        </th>
+        <th>
+            @Html.LabelFor(model => Model.First().Packages)
+        </th>
+        <th>
+            @Html.LabelFor(model => Model.First().Price)
+        </th>
+    </tr>
+    @foreach (var tvChannel in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => tvChannel.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(model => tvChannel.IsIPTV)
+            </td>
+            <td>
+                @Html.DisplayFor(model => tvChannel.IsTV)
+            </td>
+            <td>
+                @Html.DisplayFor(model => tvChannel.Packages)
+            </td>
+            <td>
+                @Html.DisplayFor(model => tvChannel.Price)
+            </td>
+        </tr>
+    }
+</table>
