@@ -9,5 +9,7 @@ namespace ISP.DAL.Repositories
 {
     public class InternetPackageRepository : RepositoryBase<InternetPackage>
     {
+        public InternetPackageRepository() : base() { }
+        public InternetPackageRepository(ISPContext context) : base(context) { }
     }
 }

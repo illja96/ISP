@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
 using ISP.DAL.Repositories;
+using ISP.DAL;
 
 namespace ISP.BLL.ModelActions
 {
@@ -15,8 +16,9 @@ namespace ISP.BLL.ModelActions
 
         public TVChannelPackageActions()
         {
-            repository = new TVChannelPackageRepository();
-            tvChannelRepository = new TVChannelRepository();
+            context = new ISPContext();
+            repository = new TVChannelPackageRepository(context);
+            tvChannelRepository = new TVChannelRepository(context);
         }
 
         public override void Cancel(Guid id)

@@ -1,0 +1,75 @@
+﻿@model ISP.DAL.DBModels.User
+@{
+    ViewBag.Title = "Панель управления";
+}
+
+<dl class="dl-horizontal">
+    <dt>
+        @Html.LabelFor(model => model.LastName)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.LastName)
+    </dd>
+
+    <dt>
+        @Html.LabelFor(model => model.FirstName)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.FirstName)
+    </dd>
+
+    @if (!string.IsNullOrWhiteSpace(Model.MiddleName))
+    {
+        <dt>
+            @Html.LabelFor(model => model.LastName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(Model.PhoneNumber))
+    {
+        <dt>
+            @Html.LabelFor(model => model.PhoneNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(Model.Email))
+    {
+        <dt>
+            @Html.LabelFor(model => model.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+    }
+
+    <dt>
+        @Html.LabelFor(model => model.DoB)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.DoB)
+    </dd>
+
+    <dt>
+        @Html.LabelFor(model => model.RegistrationDate)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.RegistrationDate)
+    </dd>
+</dl>
+
+<hr />
+
+<br />
+@Html.ActionLink("Управление подписками на пакеты интернет услуг", "User", "InternetPackageContract", null, new { @class = "btn btn-primary btn-block" })
+
+<br />
+@Html.ActionLink("Управление подписками на пакеты ТВ каналов", "User", "TVChannelPackageContract", null, new { @class = "btn btn-primary btn-block" })
+
+<br />
+@Html.ActionLink("Управление подписками на ТВ каналы", "User", "TVChannelContract", null, new { @class = "btn btn-primary btn-block" })

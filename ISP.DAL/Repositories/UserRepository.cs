@@ -9,5 +9,7 @@ namespace ISP.DAL.Repositories
 {
     public class UserRepository : RepositoryBase<User>
     {
+        public UserRepository() : base() { }
+        public UserRepository(ISPContext context) : base(context) { }
     }
 }

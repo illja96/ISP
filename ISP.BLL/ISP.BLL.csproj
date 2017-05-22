@@ -91,9 +91,12 @@
     <Compile Include="Identity\SmsService.cs" />
     <Compile Include="ModelActions\DownloadActions.cs" />
     <Compile Include="ModelActions\InternetPackageActions.cs" />
+    <Compile Include="ModelActions\InternetPackageContractActions.cs" />
     <Compile Include="ModelActions\ModelActionBase.cs" />
     <Compile Include="ModelActions\TVChannelActions.cs" />
+    <Compile Include="ModelActions\TVChannelContractActions.cs" />
     <Compile Include="ModelActions\TVChannelPackageActions.cs" />
+    <Compile Include="ModelActions\TVChannelPackageContractActions.cs" />
     <Compile Include="ModelActions\UserActions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

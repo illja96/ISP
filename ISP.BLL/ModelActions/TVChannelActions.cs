@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
 using ISP.DAL.Repositories;
+using ISP.DAL;
 
 namespace ISP.BLL.ModelActions
 {
@@ -13,15 +14,22 @@ namespace ISP.BLL.ModelActions
     {
         public TVChannelActions()
         {
-            repository = new TVChannelRepository();
+            context = new ISPContext();
+            repository = new TVChannelRepository(context);
         }
 
+        /// <summary>
+        /// Create new TVChannel. Set IsCanceled if IsIPTV and IsTV is false
+        /// </summary>
         public override void Create(TVChannel item)
         {
             if(!item.IsIPTV && !item.IsTV)
                 item.IsCanceled = true;
             base.Create(item);
         }
+        /// <summary>
+        /// Edit TVChannel. Set IsCanceled if IsIPTV and IsTV is false
+        /// </summary>
         public override void Edit(TVChannel item)
         {
             if (!item.IsIPTV && !item.IsTV)
@@ -39,11 +47,17 @@ namespace ISP.BLL.ModelActions
             item.IsCanceled = true;
             Edit(item);
         }
+        /// <summary>
+        /// Renew TVChannel. If IsIPTV and IsTV is false set its to true
+        /// </summary>
         public override void Renew(Guid id)
         {
             TVChannel item = Get(id);
             Renew(item);
         }
+        /// <summary>
+        /// Renew TVChannel. If IsIPTV and IsTV is false set its to true
+        /// </summary>
         public override void Renew(TVChannel item)
         {
             if (!item.IsIPTV && !item.IsTV)

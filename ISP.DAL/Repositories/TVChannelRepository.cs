@@ -9,5 +9,7 @@ namespace ISP.DAL.Repositories
 {
     public class TVChannelRepository : RepositoryBase<TVChannel>
     {
+        public TVChannelRepository() : base() { }
+        public TVChannelRepository(ISPContext context) : base(context) { }
     }
 }

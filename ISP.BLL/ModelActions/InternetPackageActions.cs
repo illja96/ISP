@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
 using ISP.DAL.Repositories;
+using ISP.DAL;
 
 namespace ISP.BLL.ModelActions
 {
@@ -13,7 +14,8 @@ namespace ISP.BLL.ModelActions
     {
         public InternetPackageActions()
         {
-            repository = new InternetPackageRepository();
+            context = new ISPContext();
+            repository = new InternetPackageRepository(context);
         }
 
         public override void Cancel(Guid id)

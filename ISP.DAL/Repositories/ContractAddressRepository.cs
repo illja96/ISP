@@ -9,5 +9,7 @@ namespace ISP.DAL.Repositories
 {
     public class ContractAddressRepository : RepositoryBase<ContractAddress>
     {
+        public ContractAddressRepository() : base() { }
+        public ContractAddressRepository(ISPContext context) : base(context) { }
     }
 }

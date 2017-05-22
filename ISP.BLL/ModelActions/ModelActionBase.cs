@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ISP.DAL.Repositories;
+using ISP.DAL;
 
 namespace ISP.BLL.ModelActions
 {
     public abstract class ModelActionBase<T> where T : class
     {
+        protected ISPContext context;
         protected RepositoryBase<T> repository;
 
         public abstract T GetNotCanceled(Guid id);

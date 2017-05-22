@@ -32,7 +32,7 @@ namespace ISP.DAL.DBModels
 
         [Required]
         [ForeignKey("TVChannelPackage")]
-        public Guid ChannelPackageId { get; set; }
+        public Guid TVChannelPackageId { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
