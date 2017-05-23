@@ -191,7 +191,9 @@
     <Compile Include="Controllers\AdminInternetPackageContractController.cs" />
     <Compile Include="Controllers\AdminInternetPackageController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AdminTVChannelContactController.cs" />
     <Compile Include="Controllers\AdminTVChannelController.cs" />
+    <Compile Include="Controllers\AdminTVChannelPackageContractController.cs" />
     <Compile Include="Controllers\AdminTVChannelPackageController.cs" />
     <Compile Include="Controllers\AdminUserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -316,7 +318,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\AdminInternetPackageContract\" />
+    <Folder Include="Views\AdminTVChannelPackageContract\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

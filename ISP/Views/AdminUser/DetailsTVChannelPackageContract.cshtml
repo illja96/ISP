@@ -1,1 +1,60 @@
 ﻿@model IEnumerable<ISP.DAL.DBModels.TVChannelPackageContract>
+
+<table class="table table-striped table-hover table-bordered">
+    <tr>
+        <th>
+            @Html.LabelFor(model => model.First().Number)
+        </th>
+        <th>
+            @Html.LabelFor(model => model.First().DoS)
+        </th>
+        <th>
+            @Html.LabelFor(model => model.First().TVChannelPackage.Name)
+        </th>
+        <th>
+            @Html.LabelFor(model => model.First().TVChannelPackage.Price)
+        </th>
+    </tr>
+    @using (Html.BeginForm("Create", "AdminTVChannelPackageContract", new { @contractAddressId = (ViewData["contractAddress"] as ISP.DAL.DBModels.ContractAddress).Id }))
+    {
+        @Html.AntiForgeryToken()
+        <tr class="info">
+            <td colspan="4">
+                @Html.DropDownList("tvChannelPackageId", (ViewData["tvChannelPackageId"] as IEnumerable<SelectListItem>), new { @class = "form-control" })
+            </td>
+            <td>
+                <input type="submit" class="btn btn-primary" value="Подписать" />
+            </td>
+        </tr>
+    }
+    @foreach (var tvChannelPackageContract in Model)
+    {
+        string trClasses = (tvChannelPackageContract.IsCanceled ? "danger" : "");
+
+        <tr class="@trClasses">
+            <td>
+                @Html.DisplayFor(model => tvChannelPackageContract.Number)
+            </td>
+            <td>
+                @Html.DisplayFor(model => tvChannelPackageContract.DoS)
+            </td>
+            <td>
+                @Html.DisplayFor(model => tvChannelPackageContract.TVChannelPackage.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(model => tvChannelPackageContract.TVChannelPackage.Price)
+            </td>
+
+            @if (!tvChannelPackageContract.IsCanceled)
+            {
+                <td>
+                    @using (Html.BeginForm("Cancel", "AdminTVChannelPackageContract", new { id = tvChannelPackageContract.Id }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="submit" class="btn btn-xs btn-danger" value="Аннулировать" />
+                    }
+                </td>
+            }
+        </tr>
+    }
+</table>

@@ -1,1 +1,60 @@
 ﻿@model IEnumerable<ISP.DAL.DBModels.TVChannelContract>
+
+<table class="table table-striped table-hover table-bordered">
+    <tr>
+        <th>
+            @Html.LabelFor(model => model.First().Number)
+        </th>
+        <th>
+            @Html.LabelFor(model => model.First().DoS)
+        </th>
+        <th>
+            @Html.LabelFor(model => model.First().TVChannel.Name)
+        </th>
+        <th>
+            @Html.LabelFor(model => model.First().TVChannel.Price)
+        </th>
+    </tr>
+    @using (Html.BeginForm("Create", "AdminTVChannelContact", new { @contractAddressId = (ViewData["contractAddress"] as ISP.DAL.DBModels.ContractAddress).Id }))
+    {
+        @Html.AntiForgeryToken()
+        <tr class="info">
+            <td colspan="4">
+                @Html.DropDownList("tvChannelId", (ViewData["tvChannelId"] as IEnumerable<SelectListItem>), new { @class = "form-control" })
+            </td>
+            <td>
+                <input type="submit" class="btn btn-primary" value="Подписать" />
+            </td>
+        </tr>
+    }
+    @foreach (var tvChannelContract in Model)
+    {
+        string trClasses = (tvChannelContract.IsCanceled ? "danger" : "");
+
+        <tr class="@trClasses">
+            <td>
+                @Html.DisplayFor(model => tvChannelContract.Number)
+            </td>
+            <td>
+                @Html.DisplayFor(model => tvChannelContract.DoS)
+            </td>
+            <td>
+                @Html.DisplayFor(model => tvChannelContract.TVChannel.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(model => tvChannelContract.TVChannel.Price)
+            </td>
+
+            @if (!tvChannelContract.IsCanceled)
+            {
+                <td>
+                    @using (Html.BeginForm("Cancel", "AdminTVChannelContact", new { id = tvChannelContract.Id }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="submit" class="btn btn-xs btn-danger" value="Аннулировать" />
+                    }
+                </td>
+            }
+        </tr>
+    }
+</table>

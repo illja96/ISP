@@ -19,10 +19,6 @@ namespace ISP.DAL.DBModels
         public string Number { get; set; }
 
         [Required]
-        [Display(Name = "Название")]
-        public string Name { get; set; }
-
-        [Required]
         [ForeignKey("Subscriber")]
         public string SubscriberId { get; set; }
         

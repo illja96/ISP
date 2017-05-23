@@ -67,32 +67,32 @@ namespace ISP.Controllers
         {
             ContractAddress contractAddress = contractAddressActions.Get(contractAddressId);
             IEnumerable<InternetPackageContract> internetPackageContracts = contractAddress.InternetPackageContracts.OrderByDescending(item => item.Number).ToArray();
-            IEnumerable<InternetPackage> internetPackages = internetPackageContracts.Select(item => item.InternetPackage).ToArray();
+            IEnumerable<InternetPackage> allInternetPackages = intrenetPackageActions.GetAllNotCanceled().ToArray();
 
-            ViewBag.internetPackageId = intrenetPackageActions.GetAllNotCanceled().Except(internetPackages).Select(item => new SelectListItem() { Text = item.Name, Value = item.Id.ToString() });
-            ViewBag.contractAddress = contractAddress;
+            ViewData["internetPackageId"] = allInternetPackages.Select(item => new SelectListItem() { Text = item.Name, Value = item.Id.ToString() });
+            ViewData["contractAddress"] = contractAddress;
 
             return PartialView(internetPackageContracts);
         }
         public ActionResult DetailsTVChannelContract(Guid contractAddressId)
         {
             ContractAddress contractAddress = contractAddressActions.Get(contractAddressId);
-            IEnumerable<TVChannelContract> tvChannelContracts = contractAddress.TVChannelContracts.ToArray();
-            IEnumerable<TVChannel> tvChannels = tvChannelContracts.Select(item => item.TVChannel).ToArray();
+            IEnumerable<TVChannelContract> tvChannelContracts = contractAddress.TVChannelContracts.OrderByDescending(item => item.Number).ToArray();
+            IEnumerable<TVChannel> allTVChannels = tvChannelActions.GetAllNotCanceled().ToArray();
 
-            ViewBag.tvChannelId = tvChannelActions.GetAllNotCanceled().Except(tvChannels).Select(item => new SelectListItem() { Text = item.Name, Value = item.Id.ToString() });
-            ViewBag.contractAddress = contractAddress;
+            ViewData["tvChannelId"] = allTVChannels.Select(item => new SelectListItem() { Text = item.Name, Value = item.Id.ToString() });
+            ViewData["contractAddress"] = contractAddress;
 
             return PartialView(tvChannelContracts);
         }
         public ActionResult DetailsTVChannelPackageContract(Guid contractAddressId)
         {
             ContractAddress contractAddress = contractAddressActions.Get(contractAddressId);
-            IEnumerable<TVChannelPackageContract> tvChannelPackageContracts = contractAddress.TVChannelPackageContracts.ToArray();
-            IEnumerable<TVChannelPackage> tvChannelPackages = tvChannelPackageContracts.Select(item => item.TVChannelPackage).ToArray();
+            IEnumerable<TVChannelPackageContract> tvChannelPackageContracts = contractAddress.TVChannelPackageContracts.OrderByDescending(item => item.Number).ToArray();
+            IEnumerable<TVChannelPackage> allTVChannelPackages = tvChannelPackageActions.GetAllNotCanceled().ToArray();
 
-            ViewBag.tvChannelPackageId = tvChannelPackageActions.GetAllNotCanceled().Except(tvChannelPackages).Select(item => new SelectListItem() { Text = item.Name, Value = item.Id.ToString() });
-            ViewBag.contractAddress = contractAddress;
+            ViewData["tvChannelPackageId"] = allTVChannelPackages.Select(item => new SelectListItem() { Text = item.Name, Value = item.Id.ToString() });
+            ViewData["contractAddress"] = contractAddress;
 
             return PartialView(tvChannelPackageContracts);
         }

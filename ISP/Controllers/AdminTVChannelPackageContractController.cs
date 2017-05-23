@@ -9,27 +9,27 @@ using System.Web.Mvc;
 namespace ISP.Controllers
 {
     [Authorize]
-    public class AdminInternetPackageContractController : Controller
+    public class AdminTVChannelPackageContractController : Controller
     {
-        private InternetPackageContractActions actions;
+        private TVChannelPackageContractActions actions;
         private UserActions userActions;
         private ContractAddressActions contractAddressActions;
 
-        public AdminInternetPackageContractController()
+        public AdminTVChannelPackageContractController()
         {
-            actions = new InternetPackageContractActions();
+            actions = new TVChannelPackageContractActions();
             userActions = new UserActions();
             contractAddressActions = new ContractAddressActions();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Guid contractAddressId, Guid internetPackageId)
+        public ActionResult Create(Guid contractAddressId, Guid tvChannelPackageId)
         {
             ContractAddress contractAddress = contractAddressActions.Get(contractAddressId);
             User user = userActions.GetById(contractAddress.SubscriberId);
 
-            if (!actions.CanSubscribe(contractAddressId, internetPackageId))
+            if (!actions.CanSubscribe(contractAddressId, tvChannelPackageId))
             {
                 TempData["notEnoughBalance"] = true;
 
@@ -45,7 +45,7 @@ namespace ISP.Controllers
 
             if (User.IsInRole("Administrator") || User.IsInRole("Support") || User.Identity.Name == user.UserName)
             {
-                actions.Create(user.Id, contractAddressId, internetPackageId);
+                actions.Create(user.Id, contractAddressId, tvChannelPackageId);
 
                 if (User.Identity.Name == user.UserName)
                 {
@@ -66,19 +66,19 @@ namespace ISP.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Cancel(Guid id)
         {
-            InternetPackageContract internetPackageContract = actions.GetNotCanceled(id);
+            TVChannelPackageContract tvChannelPackageContract = actions.GetNotCanceled(id);
 
-            if (User.IsInRole("Administrator") || User.IsInRole("Support") || User.Identity.Name == internetPackageContract.Subscriber.UserName)
+            if (User.IsInRole("Administrator") || User.IsInRole("Support") || User.Identity.Name == tvChannelPackageContract.Subscriber.UserName)
             {
-                actions.Cancel(internetPackageContract.Id);
+                actions.Cancel(tvChannelPackageContract.Id);
 
-                if (User.Identity.Name == internetPackageContract.Subscriber.UserName)
+                if (User.Identity.Name == tvChannelPackageContract.Subscriber.UserName)
                 {
                     return RedirectToAction("Index", "User");
                 }
                 else
                 {
-                    return RedirectToAction("Details", "AdminUser", new { @id = internetPackageContract.SubscriberId });
+                    return RedirectToAction("Details", "AdminUser", new { @id = tvChannelPackageContract.SubscriberId });
                 }
 
             }

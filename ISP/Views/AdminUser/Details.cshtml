@@ -3,6 +3,11 @@
     ViewBag.Title = string.Format("Побробности пользователя с номером {0}", Model.UserName);
 }
 
+<div class="text-right">
+    @Html.ActionLink("Назад", "Index", "AdminUser", null, new { @class = "btn btn-default" })
+</div>
+<br />
+
 <dl class="dl-horizontal">
     <dt>
         @Html.LabelFor(model => model.LastName)
@@ -72,7 +77,11 @@
 
 @if (TempData["notEnoughBalance"] != null)
 {
-    <p class="text-danger">Недостаточный баланс чтобы выполнить эту операцию!</p>
+    <p class="text-danger">
+        Невозможно выполнить эту операцию!
+        <br />
+        Возможно данная услуга уже подключена сама или в другом пакете или недостаточный баланс
+    </p>
 }
 
 @foreach (var contractAddress in Model.ContractAddresses)

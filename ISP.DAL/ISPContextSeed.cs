@@ -55,14 +55,14 @@ namespace ISP.DAL
             };
             userManager.Create(supportUser, "supportsupport");
             userManager.AddToRole(supportUser.Id, "Support");
-            
+
             var subscriberUser = new User()
             {
                 UserName = "2",
                 Email = "saskiuhia@gmail.com",
                 PhoneNumber = "+380504700850",
-                FirstName = "Хованский",
-                LastName = "Илья",
+                FirstName = "Илья",
+                LastName = "Хованский",
                 MiddleName = "Эдурадович",
                 Balance = 1000,
                 DoB = DateTime.UtcNow.Date,

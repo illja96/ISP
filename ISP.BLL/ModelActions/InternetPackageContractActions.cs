@@ -55,6 +55,11 @@ namespace ISP.BLL.ModelActions
             double price = CalculatePrice(monthPrice);
             User user = (userRepository as UserRepository).GetById(item.SubscriberId);
 
+            if (user.Balance < price)
+            {
+                throw new Exception();
+            }
+
             ContractAddress contractAddress = contractAddressRepository.Get(item.ContractAddressId);
             IEnumerable<InternetPackageContract> intenetPackageContracts = contractAddress.InternetPackageContracts.Where(internetContract => !internetContract.IsCanceled);
             foreach (InternetPackageContract internetPackageContract in intenetPackageContracts)
@@ -115,6 +120,12 @@ namespace ISP.BLL.ModelActions
         public bool CanSubscribe(Guid contractAddressId, Guid internetPackageId)
         {
             ContractAddress contractAddress = contractAddressRepository.Get(contractAddressId);
+
+            if(contractAddress.InternetPackageContracts.Count(item => item.InternetPackageId == internetPackageId && !item.IsCanceled) != 0)
+            {
+                return false;
+            }
+
             User user = (userRepository as UserRepository).GetById(contractAddress.SubscriberId);
             InternetPackage internetPackage = internetPackageRepository.Get(internetPackageId);
             double price = CalculatePrice(internetPackage.Price);

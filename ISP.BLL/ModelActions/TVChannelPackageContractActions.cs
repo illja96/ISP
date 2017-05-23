@@ -12,41 +12,75 @@ namespace ISP.BLL.ModelActions
 {
     public class TVChannelPackageContractActions : ModelActionBase<TVChannelPackageContract>
     {
+        private RepositoryBase<User> userRepository;
+        private RepositoryBase<ContractAddress> contractAddressRepository;
+        private RepositoryBase<TVChannel> tvChannelRepository;
         private RepositoryBase<TVChannelContract> tvChannelContractRepository;
         private RepositoryBase<TVChannelPackage> tvChannelPackageRepository;
-        private RepositoryBase<ContractAddress> contractAddressRepository;
 
         public TVChannelPackageContractActions()
         {
             context = new ISPContext();
-            repository = new TVChannelPackageContractRepository(context);
+            userRepository = new UserRepository(context);
+            contractAddressRepository = new ContractAddressRepository(context);
+            tvChannelRepository = new TVChannelRepository(context);
             tvChannelContractRepository = new TVChannelContractRepository(context);
             tvChannelPackageRepository = new TVChannelPackageRepository(context);
-            contractAddressRepository = new ContractAddressRepository(context);
+            repository = new TVChannelPackageContractRepository(context);
         }
 
+        /// <summary>
+        /// Create new TVChannelContract and user change balance
+        /// </summary>
+        public void Create(string userId, Guid contractAddressId, Guid tvChannelPackageId)
+        {
+            User user = (userRepository as UserRepository).GetById(userId);
+            ContractAddress contractAddress = contractAddressRepository.Get(contractAddressId);
+            TVChannelPackage tvChannelPackage = tvChannelPackageRepository.Get(tvChannelPackageId);
+
+            TVChannelPackageContract tvChannelPackageContract = new TVChannelPackageContract()
+            {
+                Number = repository.Count().ToString(),
+                DoS = DateTime.UtcNow,
+                SubscriberId = user.Id,
+                ContractAddressId = contractAddress.Id,
+                TVChannelPackageId = tvChannelPackage.Id
+            };
+            Create(tvChannelPackageContract);
+        }
         /// <summary>
         /// Create new TVChannelPackageContract and cancel all TVChannelContracts constains in that package
         /// </summary>
         public override void Create(TVChannelPackageContract item)
         {
+            TVChannelPackage tvChannelPackage = tvChannelPackageRepository.Get(item.TVChannelPackageId);
+
+            double monthPrice = CalculatePrice(tvChannelPackage.Price);
+            double price = CalculatePrice(monthPrice);
+            User user = (userRepository as UserRepository).GetById(item.SubscriberId);
+
+            if (user.Balance < price)
+            {
+                throw new Exception();
+            }
+
             ContractAddress contractAddress = contractAddressRepository.Get(item.ContractAddressId);
             IEnumerable<TVChannel> tvChannelsInPackage = tvChannelPackageRepository.Get(item.TVChannelPackageId).Channels.ToArray();
             IEnumerable<TVChannelContract> tvChannelContracts = contractAddress.TVChannelContracts.Where(tvChannel => !tvChannel.IsCanceled).ToArray();
-            foreach(TVChannelContract tvChannelContract in tvChannelContracts)
+            foreach (TVChannelContract tvChannelContract in tvChannelContracts)
             {
-                if(tvChannelsInPackage.Count(tvChannel => tvChannel.Id == tvChannelContract.TVChannelId) != 0)
+                if (tvChannelsInPackage.Count(tvChannel => tvChannel.Id == tvChannelContract.TVChannelId) != 0)
                 {
-                    tvChannelContract.IsCanceled = true;
-                    tvChannelContractRepository.Edit(tvChannelContract);
+                    TVChannelContract tvChannelContractToCancel = tvChannelContractRepository.Get(tvChannelContract.Id);
+                    tvChannelContractToCancel.IsCanceled = true;
+                    tvChannelContractRepository.Edit(tvChannelContractToCancel);
                 }
             }
 
             base.Create(item);
-        }
-        public override void Edit(TVChannelPackageContract item)
-        {
-            throw new NotImplementedException();
+
+            user.Balance -= price;
+            userRepository.Edit(user);
         }
 
         public override void Cancel(Guid id)
@@ -92,6 +126,35 @@ namespace ISP.BLL.ModelActions
         public override IEnumerable<TVChannelPackageContract> Sort(IEnumerable<TVChannelPackageContract> items, string sortBy, bool orderByDescending)
         {
             throw new NotImplementedException();
+        }
+
+        public bool CanSubscribe(Guid contractAddressId, Guid tvChannelPackageId)
+        {
+            ContractAddress contractAddress = contractAddressRepository.Get(contractAddressId);
+
+            if (contractAddress.TVChannelPackageContracts.Count(item => item.TVChannelPackageId == tvChannelPackageId && !item.IsCanceled) != 0)
+            {
+                return false;
+            }
+
+            User user = (userRepository as UserRepository).GetById(contractAddress.SubscriberId);
+            TVChannelPackage tvChannelPackage = tvChannelPackageRepository.Get(tvChannelPackageId);
+            double price = CalculatePrice(tvChannelPackage.Price);
+
+            return user.Balance >= price;
+        }
+        private double CalculatePrice(double monthPrice)
+        {
+            int currentYear = DateTime.UtcNow.Year;
+            int currentMonth = DateTime.UtcNow.Month;
+            int currentDay = DateTime.UtcNow.Day;
+
+            int daysInMonth = DateTime.DaysInMonth(currentYear, currentMonth);
+            int daysLeftInMonth = daysInMonth - currentDay;
+
+            double pricePerDay = monthPrice / daysInMonth;
+            double price = pricePerDay * daysLeftInMonth;
+            return price;
         }
     }
 }
