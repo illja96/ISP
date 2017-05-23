@@ -1,0 +1,132 @@
+﻿@model ISP.DAL.DBModels.User
+@{
+    ViewBag.Title = string.Format("Побробности пользователя с номером {0}", Model.UserName);
+}
+
+<dl class="dl-horizontal">
+    <dt>
+        @Html.LabelFor(model => model.LastName)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.LastName)
+    </dd>
+
+    <dt>
+        @Html.LabelFor(model => model.FirstName)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.FirstName)
+    </dd>
+
+    @if (!string.IsNullOrWhiteSpace(Model.MiddleName))
+    {
+    <dt>
+        @Html.LabelFor(model => model.LastName)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.LastName)
+    </dd>
+    }
+
+    <dt>
+        @Html.LabelFor(model => model.Balance)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Balance)
+    </dd>
+
+    @if (!string.IsNullOrWhiteSpace(Model.PhoneNumber))
+    {
+    <dt>
+        @Html.LabelFor(model => model.PhoneNumber)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.PhoneNumber)
+    </dd>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(Model.Email))
+    {
+    <dt>
+        @Html.LabelFor(model => model.Email)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Email)
+    </dd>
+    }
+
+    <dt>
+        @Html.LabelFor(model => model.DoB)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.DoB)
+    </dd>
+
+    <dt>
+        @Html.LabelFor(model => model.RegistrationDate)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.RegistrationDate)
+    </dd>
+</dl>
+
+@if (TempData["notEnoughBalance"] != null)
+{
+    <p class="text-danger">Недостаточный баланс чтобы выполнить эту операцию!</p>
+}
+
+@foreach (var contractAddress in Model.ContractAddresses)
+{
+    string fullAddress = string.Format("{0} {1} {2} {3} {4} {5}", contractAddress.ZIP, contractAddress.Department, contractAddress.City, contractAddress.Street, contractAddress.House, contractAddress.Apartment);
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <button type="button" class="btn btn-info spoiler-trigger" data-toggle="collapse">@fullAddress</button>
+        </div>
+        <div class="panel-collapse collapse out">
+            <div class="panel-body">
+                @*InternetPackage*@
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <button type="button" class="btn btn-info spoiler-trigger" data-toggle="collapse">Пакеты интернет услуг</button>
+                    </div>
+                    <div class="panel-collapse collapse out">
+                        <div class="panel-body">
+                            @Html.Action("DetailsInternetPackageContract", new { @contractAddressId = contractAddress.Id })
+                        </div>
+                    </div>
+                </div>
+
+                @*TVChannel*@
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <button type="button" class="btn btn-info spoiler-trigger" data-toggle="collapse">ТВ каналы</button>
+                    </div>
+                    <div class="panel-collapse collapse out">
+                        <div class="panel-body">
+                            @Html.Action("DetailsTVChannelContract", new { @contractAddressId = contractAddress.Id })
+                        </div>
+                    </div>
+                </div>
+
+                @*TVChannelPackage*@
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <button type="button" class="btn btn-info spoiler-trigger" data-toggle="collapse">Пакеты ТВ каналов</button>
+                    </div>
+                    <div class="panel-collapse collapse out">
+                        <div class="panel-body">
+                            @Html.Action("DetailsTVChannelPackageContract", new { @contractAddressId = contractAddress.Id })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    $(".spoiler-trigger").click(function () {
+        $(this).parent().next().collapse('toggle');
+    });
+</script>

@@ -66,5 +66,10 @@ namespace ISP.DAL.Repositories
             context.Entry<T>(item).State = System.Data.Entity.EntityState.Modified;
             context.SaveChanges();
         }
+
+        public virtual int Count()
+        {
+            return context.Set<T>().Count();
+        }
     }
 }

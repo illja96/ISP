@@ -33,7 +33,7 @@ namespace ISP.BLL.ModelActions
         {
             User user = new User()
             {
-                UserName = repository.GetAll().Count().ToString(),
+                UserName = repository.Count().ToString(),
                 Email = item.Email,
                 PhoneNumber = item.PhoneNumber,
                 FirstName = item.FirstName,
@@ -63,7 +63,7 @@ namespace ISP.BLL.ModelActions
         }
         public User GetById(string userId)
         {
-            return repository.Get(item => item.Id == userId);
+            return (repository as UserRepository).GetById(userId);
         }
         public IEnumerable<User> GetAll()
         {

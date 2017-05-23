@@ -182,11 +182,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\ExceptionFilter.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\HtmlHelpers.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminInternetPackageContractController.cs" />
     <Compile Include="Controllers\AdminInternetPackageController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AdminTVChannelController.cs" />
@@ -306,9 +308,15 @@
     <Content Include="Views\Home\InternetPackage.cshtml" />
     <Content Include="Views\Home\TVChannel.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\Home\Exception.cshtml" />
+    <Content Include="Views\AdminUser\Details.cshtml" />
+    <Content Include="Views\AdminUser\DetailsInternetPackageContract.cshtml" />
+    <Content Include="Views\AdminUser\DetailsTVChannelPackageContract.cshtml" />
+    <Content Include="Views\AdminUser\DetailsTVChannelContract.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\AdminInternetPackageContract\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

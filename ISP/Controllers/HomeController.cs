@@ -48,5 +48,10 @@ namespace ISP.Controllers
         {
             return View();
         }
+
+        public ActionResult Exception()
+        {
+            return View();
+        }
     }
 }

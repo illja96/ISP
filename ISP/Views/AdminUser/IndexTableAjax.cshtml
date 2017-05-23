@@ -83,6 +83,9 @@
                 @Html.DisplayFor(model => user.ContractsTotal)
             </td>
             <td>
+                @Html.ActionLink("Подробности", "Details", new { id = user.Id }, new { @class = "btn btn-xs btn-info" })
+            </td>
+            <td>
                 @Html.ActionLink("Редактировать", "Edit", new { id = user.Id }, new { @class = editButtonClasses })
             </td>
         </tr>

@@ -28,6 +28,13 @@
         </dd>
     }
 
+    <dt>
+        @Html.LabelFor(model => model.Balance)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Balance)
+    </dd>
+
     @if (!string.IsNullOrWhiteSpace(Model.PhoneNumber))
     {
         <dt>
@@ -62,14 +69,3 @@
         @Html.DisplayFor(model => model.RegistrationDate)
     </dd>
 </dl>
-
-<hr />
-
-<br />
-@Html.ActionLink("Управление подписками на пакеты интернет услуг", "User", "InternetPackageContract", null, new { @class = "btn btn-primary btn-block" })
-
-<br />
-@Html.ActionLink("Управление подписками на пакеты ТВ каналов", "User", "TVChannelPackageContract", null, new { @class = "btn btn-primary btn-block" })
-
-<br />
-@Html.ActionLink("Управление подписками на ТВ каналы", "User", "TVChannelContract", null, new { @class = "btn btn-primary btn-block" })

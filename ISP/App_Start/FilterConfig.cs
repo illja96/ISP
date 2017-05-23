@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using ISP.App_Start;
+using System.Web;
 using System.Web.Mvc;
 
 namespace ISP
@@ -7,6 +8,7 @@ namespace ISP
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
+            //filters.Add(new ExceptionFilter());
             filters.Add(new HandleErrorAttribute());
         }
     }

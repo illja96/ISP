@@ -16,7 +16,20 @@ namespace ISP.Controllers
     [Authorize(Roles = "Administrator, Support")]
     public class AdminUserController : Controller
     {
-        private UserActions actions = new UserActions();
+        private UserActions actions;
+        private ContractAddressActions contractAddressActions;
+        private InternetPackageActions intrenetPackageActions;
+        private TVChannelActions tvChannelActions;
+        private TVChannelPackageActions tvChannelPackageActions;
+
+        public AdminUserController()
+        {
+            actions = new UserActions();
+            contractAddressActions = new ContractAddressActions();
+            intrenetPackageActions = new InternetPackageActions();
+            tvChannelActions = new TVChannelActions();
+            tvChannelPackageActions = new TVChannelPackageActions();
+        }
 
         public ActionResult Index()
         {
@@ -29,7 +42,6 @@ namespace ISP.Controllers
 
             return View();
         }
-
         public ActionResult IndexTableAjax(string sortBy = "Id", bool orderByDescending = false)
         {
             IEnumerable<User> users = actions.GetAll();
@@ -48,7 +60,41 @@ namespace ISP.Controllers
 
         public ActionResult Details(string id)
         {
-            return View();
+            User user = actions.GetById(id);
+            return View(user);
+        }
+        public ActionResult DetailsInternetPackageContract(Guid contractAddressId)
+        {
+            ContractAddress contractAddress = contractAddressActions.Get(contractAddressId);
+            IEnumerable<InternetPackageContract> internetPackageContracts = contractAddress.InternetPackageContracts.OrderByDescending(item => item.Number).ToArray();
+            IEnumerable<InternetPackage> internetPackages = internetPackageContracts.Select(item => item.InternetPackage).ToArray();
+
+            ViewBag.internetPackageId = intrenetPackageActions.GetAllNotCanceled().Except(internetPackages).Select(item => new SelectListItem() { Text = item.Name, Value = item.Id.ToString() });
+            ViewBag.contractAddress = contractAddress;
+
+            return PartialView(internetPackageContracts);
+        }
+        public ActionResult DetailsTVChannelContract(Guid contractAddressId)
+        {
+            ContractAddress contractAddress = contractAddressActions.Get(contractAddressId);
+            IEnumerable<TVChannelContract> tvChannelContracts = contractAddress.TVChannelContracts.ToArray();
+            IEnumerable<TVChannel> tvChannels = tvChannelContracts.Select(item => item.TVChannel).ToArray();
+
+            ViewBag.tvChannelId = tvChannelActions.GetAllNotCanceled().Except(tvChannels).Select(item => new SelectListItem() { Text = item.Name, Value = item.Id.ToString() });
+            ViewBag.contractAddress = contractAddress;
+
+            return PartialView(tvChannelContracts);
+        }
+        public ActionResult DetailsTVChannelPackageContract(Guid contractAddressId)
+        {
+            ContractAddress contractAddress = contractAddressActions.Get(contractAddressId);
+            IEnumerable<TVChannelPackageContract> tvChannelPackageContracts = contractAddress.TVChannelPackageContracts.ToArray();
+            IEnumerable<TVChannelPackage> tvChannelPackages = tvChannelPackageContracts.Select(item => item.TVChannelPackage).ToArray();
+
+            ViewBag.tvChannelPackageId = tvChannelPackageActions.GetAllNotCanceled().Except(tvChannelPackages).Select(item => new SelectListItem() { Text = item.Name, Value = item.Id.ToString() });
+            ViewBag.contractAddress = contractAddress;
+
+            return PartialView(tvChannelPackageContracts);
         }
 
         public ActionResult Create()
@@ -60,7 +106,6 @@ namespace ISP.Controllers
 
             return View(user);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(UserAdminCreate userDetails)
@@ -98,7 +143,6 @@ namespace ISP.Controllers
             ViewData["roles"] = roles.Select(item => new SelectListItem { Text = item.Key, Value = item.Value });
             return View(new UserAdminEdit(user, userRole));
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(UserAdminEdit userDetails)

@@ -11,5 +11,10 @@ namespace ISP.DAL.Repositories
     {
         public UserRepository() : base() { }
         public UserRepository(ISPContext context) : base(context) { }
+
+        public User GetById(string userId)
+        {
+            return context.Set<User>().Find(userId);
+        }
     }
 }

@@ -12,31 +12,59 @@ namespace ISP.BLL.ModelActions
 {
     public class InternetPackageContractActions : ModelActionBase<InternetPackageContract>
     {
+        private RepositoryBase<User> userRepository;
         private RepositoryBase<ContractAddress> contractAddressRepository;
+        private RepositoryBase<InternetPackage> internetPackageRepository;
 
         public InternetPackageContractActions()
         {
             context = new ISPContext();
             repository = new InternetPackageContractRepository(context);
+            userRepository = new UserRepository(context);
             contractAddressRepository = new ContractAddressRepository(context);
+            internetPackageRepository = new InternetPackageRepository(context);
         }
 
         /// <summary>
         /// Create new InternetPackageContract. Cancel all others InternetPackageContract
         /// </summary>
+        public void Create(string userId, Guid contractAddressId, Guid internetPackageId)
+        {
+            User user = (userRepository as UserRepository).GetById(userId);
+            ContractAddress contractAddress = contractAddressRepository.Get(contractAddressId);
+            InternetPackage internetPackage = internetPackageRepository.Get(internetPackageId);
+
+            InternetPackageContract internetPackageContract = new InternetPackageContract()
+            {
+                Number = repository.Count().ToString(),
+                DoS = DateTime.UtcNow,
+                SubscriberId = user.Id,
+                ContractAddressId = contractAddress.Id,
+                InternetPackageId = internetPackage.Id,
+            };
+            Create(internetPackageContract);
+        }
+        /// <summary>
+        /// Create new InternetPackageContract. Cancel all others InternetPackageContract
+        /// </summary>
         public override void Create(InternetPackageContract item)
         {
+            InternetPackage intrenetPackage = internetPackageRepository.Get(item.InternetPackageId);
+
+            double monthPrice = CalculatePrice(intrenetPackage.Price);
+            double price = CalculatePrice(monthPrice);
+            User user = (userRepository as UserRepository).GetById(item.SubscriberId);
+
             ContractAddress contractAddress = contractAddressRepository.Get(item.ContractAddressId);
             IEnumerable<InternetPackageContract> intenetPackageContracts = contractAddress.InternetPackageContracts.Where(internetContract => !internetContract.IsCanceled);
-            foreach(InternetPackageContract internetPackageContract in intenetPackageContracts)
+            foreach (InternetPackageContract internetPackageContract in intenetPackageContracts)
             {
-                Cancel(internetPackageContract);
+                Cancel(internetPackageContract.Id);
             }
             base.Create(item);
-        }
-        public override void Edit(InternetPackageContract item)
-        {
-            throw new NotImplementedException();
+
+            user.Balance -= price;
+            userRepository.Edit(user);
         }
 
         public override void Cancel(Guid id)
@@ -82,6 +110,28 @@ namespace ISP.BLL.ModelActions
         public override IEnumerable<InternetPackageContract> Sort(IEnumerable<InternetPackageContract> items, string sortBy, bool orderByDescending)
         {
             throw new NotImplementedException();
+        }
+
+        public bool CanSubscribe(Guid contractAddressId, Guid internetPackageId)
+        {
+            ContractAddress contractAddress = contractAddressRepository.Get(contractAddressId);
+            User user = (userRepository as UserRepository).GetById(contractAddress.SubscriberId);
+            InternetPackage internetPackage = internetPackageRepository.Get(internetPackageId);
+            double price = CalculatePrice(internetPackage.Price);
+            return user.Balance >= price;
+        }
+        private double CalculatePrice(double monthPrice)
+        {
+            int currentYear = DateTime.UtcNow.Year;
+            int currentMonth = DateTime.UtcNow.Month;
+            int currentDay = DateTime.UtcNow.Day;
+
+            int daysInMonth = DateTime.DaysInMonth(currentYear, currentMonth);
+            int daysLeftInMonth = daysInMonth - currentDay;
+
+            double pricePerDay = monthPrice / daysInMonth;
+            double price = pricePerDay * daysLeftInMonth;
+            return price;
         }
     }
 }

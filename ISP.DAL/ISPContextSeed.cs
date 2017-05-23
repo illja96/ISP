@@ -27,7 +27,8 @@ namespace ISP.DAL
 
             var userStore = new UserStore<User>(context);
             var userManager = new UserManager<User>(userStore);
-            var user = new User()
+
+            var administratorUser = new User()
             {
                 UserName = "root",
                 Email = "root@localhost.localhost",
@@ -38,8 +39,50 @@ namespace ISP.DAL
                 DoB = DateTime.UtcNow.Date,
                 RegistrationDate = DateTime.UtcNow
             };
-            userManager.Create(user, "rootroot");
-            userManager.AddToRole(user.Id, "Administrator");
+            userManager.Create(administratorUser, "rootroot");
+            userManager.AddToRole(administratorUser.Id, "Administrator");
+
+            var supportUser = new User()
+            {
+                UserName = "support",
+                Email = "support@localhost.localhost",
+                PhoneNumber = "+380000000000",
+                FirstName = "support",
+                LastName = "support",
+                Balance = 0,
+                DoB = DateTime.UtcNow.Date,
+                RegistrationDate = DateTime.UtcNow
+            };
+            userManager.Create(supportUser, "supportsupport");
+            userManager.AddToRole(supportUser.Id, "Support");
+            
+            var subscriberUser = new User()
+            {
+                UserName = "2",
+                Email = "saskiuhia@gmail.com",
+                PhoneNumber = "+380504700850",
+                FirstName = "Хованский",
+                LastName = "Илья",
+                MiddleName = "Эдурадович",
+                Balance = 1000,
+                DoB = DateTime.UtcNow.Date,
+                RegistrationDate = DateTime.UtcNow
+            };
+            userManager.Create(subscriberUser, "testtesttest");
+            userManager.AddToRole(subscriberUser.Id, "Subscriber");
+
+            var subscriberUserAddress = new ContractAddress()
+            {
+                SubscriberId = subscriberUser.Id,
+                ZIP = 61024,
+                Department = "Харьковская область",
+                City = "Харьков",
+                Street = "улица Пушкинская",
+                House = "79/1",
+                Apartment = "5615"
+            };
+            subscriberUser.ContractAddresses = new List<ContractAddress>();
+            subscriberUser.ContractAddresses.Add(subscriberUserAddress);
 
             context.SaveChanges();
         }
