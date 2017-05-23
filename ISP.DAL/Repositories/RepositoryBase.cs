@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace ISP.DAL.Repositories
 {
+    /// <summary>
+    /// Provide access to T class
+    /// </summary>
     public abstract class RepositoryBase<T> where T : class
     {
         protected ISPContext context;

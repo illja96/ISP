@@ -18,7 +18,7 @@ namespace ISP.Controllers
         private ContractAddressActions contractAddressActions;
         private InternetPackageActions internetPackageActions;
         private TVChannelActions tvChannelActions;
-        private TVChannelPackageActions tvChannelPackagesActions;
+        private TVChannelPackageActions tvChannelPackageActions;
 
         public UserController()
         {
@@ -26,7 +26,7 @@ namespace ISP.Controllers
             contractAddressActions = new ContractAddressActions();
             internetPackageActions = new InternetPackageActions();
             tvChannelActions = new TVChannelActions();
-            tvChannelPackagesActions = new TVChannelPackageActions();
+            tvChannelPackageActions = new TVChannelPackageActions();
         }
 
         public ActionResult Index()
@@ -39,6 +39,10 @@ namespace ISP.Controllers
         {
             ContractAddress contractAddress = contractAddressActions.Get(contractAddressId);
             IEnumerable<InternetPackageContract> internetPackageContracts = contractAddress.InternetPackageContracts.OrderByDescending(item => item.Number).ToArray();
+            IEnumerable<InternetPackage> allInternetPackages = internetPackageActions.GetAllNotCanceled().ToArray();
+
+            ViewData["internetPackageId"] = allInternetPackages.Select(item => new SelectListItem() { Text = item.Name, Value = item.Id.ToString() });
+            ViewData["contractAddress"] = contractAddress;
 
             return PartialView(internetPackageContracts);
         }
@@ -46,6 +50,10 @@ namespace ISP.Controllers
         {
             ContractAddress contractAddress = contractAddressActions.Get(contractAddressId);
             IEnumerable<TVChannelContract> tvChannelContracts = contractAddress.TVChannelContracts.OrderByDescending(item => item.Number).ToArray();
+            IEnumerable<TVChannel> allTVChannels = tvChannelActions.GetAllNotCanceled().ToArray();
+
+            ViewData["tvChannelId"] = allTVChannels.Select(item => new SelectListItem() { Text = item.Name, Value = item.Id.ToString() });
+            ViewData["contractAddress"] = contractAddress;
 
             return PartialView(tvChannelContracts);
         }
@@ -53,6 +61,10 @@ namespace ISP.Controllers
         {
             ContractAddress contractAddress = contractAddressActions.Get(contractAddressId);
             IEnumerable<TVChannelPackageContract> tvChannelPackageContracts = contractAddress.TVChannelPackageContracts.OrderByDescending(item => item.Number).ToArray();
+            IEnumerable<TVChannelPackage> allTVChannelPackages = tvChannelPackageActions.GetAllNotCanceled().ToArray();
+
+            ViewData["tvChannelPackageId"] = allTVChannelPackages.Select(item => new SelectListItem() { Text = item.Name, Value = item.Id.ToString() });
+            ViewData["contractAddress"] = contractAddress;
 
             return PartialView(tvChannelPackageContracts);
         }

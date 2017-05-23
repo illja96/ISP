@@ -26,7 +26,7 @@ namespace ISP.BLL.ModelActions
         }
 
         /// <summary>
-        /// Create new InternetPackageContract. Cancel all others InternetPackageContract
+        /// Create new InternetPackageContract, cancel all others InternetPackageContract and change user balance
         /// </summary>
         public void Create(string userId, Guid contractAddressId, Guid internetPackageId)
         {
@@ -45,7 +45,7 @@ namespace ISP.BLL.ModelActions
             Create(internetPackageContract);
         }
         /// <summary>
-        /// Create new InternetPackageContract. Cancel all others InternetPackageContract
+        /// Create new InternetPackageContract, cancel all others InternetPackageContract and change user balance
         /// </summary>
         public override void Create(InternetPackageContract item)
         {
@@ -117,6 +117,9 @@ namespace ISP.BLL.ModelActions
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Check can user subscribe to this tariff plan
+        /// </summary>
         public bool CanSubscribe(Guid contractAddressId, Guid internetPackageId)
         {
             ContractAddress contractAddress = contractAddressRepository.Get(contractAddressId);
@@ -131,6 +134,9 @@ namespace ISP.BLL.ModelActions
             double price = CalculatePrice(internetPackage.Price);
             return user.Balance >= price;
         }
+        /// <summary>
+        /// Calculate tariff plan price to current time moment
+        /// </summary>
         private double CalculatePrice(double monthPrice)
         {
             int currentYear = DateTime.UtcNow.Year;

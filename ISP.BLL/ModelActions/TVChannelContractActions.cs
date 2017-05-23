@@ -111,6 +111,9 @@ namespace ISP.BLL.ModelActions
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Check can user subscribe to this tariff plan
+        /// </summary>
         public bool CanSubscribe(Guid contractAddressId, Guid tvChannelId)
         {
             ContractAddress contractAddress = contractAddressRepository.Get(contractAddressId);
@@ -134,6 +137,9 @@ namespace ISP.BLL.ModelActions
 
             return user.Balance >= price;
         }
+        /// <summary>
+        /// Calculate tariff plan price to current time moment
+        /// </summary>
         private double CalculatePrice(double monthPrice)
         {
             int currentYear = DateTime.UtcNow.Year;

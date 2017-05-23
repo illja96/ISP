@@ -13,6 +13,16 @@
     </div>
 }
 
+@if (TempData["notEnoughBalance"] != null)
+{
+    <div class="alert alert-dismissible alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Невозможно выполнить эту операцию!</strong>
+        <br />
+        Возможно данная услуга уже подключена сама или в другом пакете или недостаточный баланс
+    </div>
+}
+
 <dl class="dl-horizontal">
     <dt>
         @Html.LabelFor(model => model.LastName)

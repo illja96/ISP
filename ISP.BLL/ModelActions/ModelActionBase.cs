@@ -8,6 +8,9 @@ using ISP.DAL;
 
 namespace ISP.BLL.ModelActions
 {
+    /// <summary>
+    /// Main actions with T class
+    /// </summary>
     public abstract class ModelActionBase<T> where T : class
     {
         protected ISPContext context;

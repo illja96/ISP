@@ -15,6 +15,18 @@
             @Html.LabelFor(model => model.First().TVChannelPackage.Price)
         </th>
     </tr>
+    @using (Html.BeginForm("Create", "AdminTVChannelPackageContract", new { @contractAddressId = (ViewData["contractAddress"] as ISP.DAL.DBModels.ContractAddress).Id }))
+    {
+        @Html.AntiForgeryToken()
+        <tr class="info">
+            <td colspan="4">
+                @Html.DropDownList("tvChannelPackageId", (ViewData["tvChannelPackageId"] as IEnumerable<SelectListItem>), new { @class = "form-control" })
+            </td>
+            <td>
+                <input type="submit" class="btn btn-primary" value="Подписать" />
+            </td>
+        </tr>
+    }
     @foreach (var tvChannelPackageContract in Model)
     {
         string trClasses = (tvChannelPackageContract.IsCanceled ? "danger" : "");
@@ -32,6 +44,17 @@
             <td>
                 @Html.DisplayFor(model => tvChannelPackageContract.TVChannelPackage.Price)
             </td>
+
+            @if (!tvChannelPackageContract.IsCanceled)
+            {
+                <td>
+                    @using (Html.BeginForm("Cancel", "AdminTVChannelPackageContract", new { id = tvChannelPackageContract.Id }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="submit" class="btn btn-xs btn-danger" value="Аннулировать" />
+                    }
+                </td>
+            }
         </tr>
     }
 </table>

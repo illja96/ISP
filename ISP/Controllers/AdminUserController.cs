@@ -18,7 +18,7 @@ namespace ISP.Controllers
     {
         private UserActions actions;
         private ContractAddressActions contractAddressActions;
-        private InternetPackageActions intrenetPackageActions;
+        private InternetPackageActions internetPackageActions;
         private TVChannelActions tvChannelActions;
         private TVChannelPackageActions tvChannelPackageActions;
 
@@ -26,7 +26,7 @@ namespace ISP.Controllers
         {
             actions = new UserActions();
             contractAddressActions = new ContractAddressActions();
-            intrenetPackageActions = new InternetPackageActions();
+            internetPackageActions = new InternetPackageActions();
             tvChannelActions = new TVChannelActions();
             tvChannelPackageActions = new TVChannelPackageActions();
         }
@@ -67,7 +67,7 @@ namespace ISP.Controllers
         {
             ContractAddress contractAddress = contractAddressActions.Get(contractAddressId);
             IEnumerable<InternetPackageContract> internetPackageContracts = contractAddress.InternetPackageContracts.OrderByDescending(item => item.Number).ToArray();
-            IEnumerable<InternetPackage> allInternetPackages = intrenetPackageActions.GetAllNotCanceled().ToArray();
+            IEnumerable<InternetPackage> allInternetPackages = internetPackageActions.GetAllNotCanceled().ToArray();
 
             ViewData["internetPackageId"] = allInternetPackages.Select(item => new SelectListItem() { Text = item.Name, Value = item.Id.ToString() });
             ViewData["contractAddress"] = contractAddress;

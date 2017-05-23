@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace ISP.DAL
 {
+    /// <summary>
+    /// Database context
+    /// </summary>
     public class ISPContext : IdentityDbContext<User>
     {
         public DbSet<UserBalanceLog> UserBalanceLog { get; set; }

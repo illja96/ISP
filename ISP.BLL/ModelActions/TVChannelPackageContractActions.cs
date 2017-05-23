@@ -30,7 +30,7 @@ namespace ISP.BLL.ModelActions
         }
 
         /// <summary>
-        /// Create new TVChannelContract and user change balance
+        /// Create new TVChannelPackageContract, cancel all TVChannelContracts constains in that package and change user balance
         /// </summary>
         public void Create(string userId, Guid contractAddressId, Guid tvChannelPackageId)
         {
@@ -49,7 +49,7 @@ namespace ISP.BLL.ModelActions
             Create(tvChannelPackageContract);
         }
         /// <summary>
-        /// Create new TVChannelPackageContract and cancel all TVChannelContracts constains in that package
+        /// Create new TVChannelPackageContract, cancel all TVChannelContracts constains in that package and change user balance
         /// </summary>
         public override void Create(TVChannelPackageContract item)
         {
@@ -128,6 +128,9 @@ namespace ISP.BLL.ModelActions
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Check can user subscribe to this tariff plan
+        /// </summary>
         public bool CanSubscribe(Guid contractAddressId, Guid tvChannelPackageId)
         {
             ContractAddress contractAddress = contractAddressRepository.Get(contractAddressId);
@@ -143,6 +146,9 @@ namespace ISP.BLL.ModelActions
 
             return user.Balance >= price;
         }
+        /// <summary>
+        /// Calculate tariff plan price to current time moment
+        /// </summary>
         private double CalculatePrice(double monthPrice)
         {
             int currentYear = DateTime.UtcNow.Year;
