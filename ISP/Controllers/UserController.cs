@@ -1,8 +1,11 @@
 ﻿using ISP.BLL.ModelActions;
 using ISP.DAL.DBModels;
+using ISP.DAL.ViewModels;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -26,136 +29,38 @@ namespace ISP.Controllers
 
         public ActionResult Index()
         {
-            User user = GetCurrentUser();
+            User user = actions.GetById(User.Identity.GetUserId());
             return View(user);
         }
 
-        public ActionResult Edit()
+        public ActionResult ChangePassword()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(User item)
+        public ActionResult ChangePassword(ChangeUserPassword model)
         {
             if (!ModelState.IsValid)
             {
-                return View(item);
+                return View(model);
             }
 
-            return RedirectToAction("Index");
-        }
-        public ActionResult ContractAddress()
-        {
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AddContractAddress(ContractAddress contractAddress)
-        {
-            if (!ModelState.IsValid)
+            var result = actions.ChangePassowrd(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+            if (result.Succeeded)
             {
-                return View(contractAddress);
+                TempData["PasswordChanged"] = true;
+                return RedirectToAction("Index", "User");
             }
-
-            return RedirectToAction("ContractAddress");
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult EditContractAddress(ContractAddress contractAddress)
-        {
-            if(!ModelState.IsValid)
+            else
             {
-                return View(contractAddress);
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error);
+                }
+                return View(model);
             }
-
-            return RedirectToAction("ContractAddress");
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteContractAddress(Guid contractAddressId)
-        {
-            return RedirectToAction("ContractAddress");
-        }
-
-        public ActionResult InternetPackageContract()
-        {
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AddInternetPackageContract(Guid internetPackageContractId)
-        {
-            InternetPackage internetPackage = internetPackageActions.GetNotCanceled(internetPackageContractId);
-            User user = GetCurrentUser();
-            InternetPackageContract internetPackageContract = new InternetPackageContract();
-            user.InternetPackageContracts.Add(internetPackageContract);
-            actions.Edit(user);
-
-            return RedirectToAction("InternetPackageContract");
-        }
-
-        public ActionResult TVChannelContract()
-        {
-            return View();
-        }
-
-        public ActionResult TVChannelPackageContract()
-        {
-            return View();
-        }
-
-        private User GetCurrentUser()
-        {
-            string userNumber = User.Identity.Name;
-            User user = actions.Get(userNumber);
-            return user;
-        }
-        private double CalculatePrice(InternetPackage internetPackage)
-        {
-            int currentYear = DateTime.UtcNow.Year;
-            int currentMonth = DateTime.UtcNow.Month;
-            int currentDay = DateTime.UtcNow.Day;
-
-            int totalDaysInMonth = DateTime.DaysInMonth(currentYear, currentMonth);
-            int leftDaysInMonth = totalDaysInMonth - currentDay;
-
-            double fullPrice = internetPackage.Price;
-            double pricePerDay = internetPackage.Price / totalDaysInMonth;
-            double currentPrice = pricePerDay * leftDaysInMonth;
-
-            return currentPrice;
-        }
-        private double CalculatePrice(TVChannel tvChannel)
-        {
-            int currentYear = DateTime.UtcNow.Year;
-            int currentMonth = DateTime.UtcNow.Month;
-            int currentDay = DateTime.UtcNow.Day;
-
-            int totalDaysInMonth = DateTime.DaysInMonth(currentYear, currentMonth);
-            int leftDaysInMonth = totalDaysInMonth - currentDay;
-
-            double fullPrice = tvChannel.Price;
-            double pricePerDay = tvChannel.Price / totalDaysInMonth;
-            double currentPrice = pricePerDay * leftDaysInMonth;
-
-            return currentPrice;
-        }
-        private double CalculatePrice(TVChannelPackage tvChannelPackage)
-        {
-            int currentYear = DateTime.UtcNow.Year;
-            int currentMonth = DateTime.UtcNow.Month;
-            int currentDay = DateTime.UtcNow.Day;
-
-            int totalDaysInMonth = DateTime.DaysInMonth(currentYear, currentMonth);
-            int leftDaysInMonth = totalDaysInMonth - currentDay;
-
-            double fullPrice = tvChannelPackage.Price;
-            double pricePerDay = tvChannelPackage.Price / totalDaysInMonth;
-            double currentPrice = pricePerDay * leftDaysInMonth;
-
-            return currentPrice;
         }
     }
 }

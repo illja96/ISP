@@ -8,6 +8,16 @@
 </div>
 <br />
 
+@if (TempData["notEnoughBalance"] != null)
+{
+    <div class="alert alert-dismissible alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Невозможно выполнить эту операцию!</strong>
+        <br />
+        Возможно данная услуга уже подключена сама или в другом пакете или недостаточный баланс
+    </div>
+}
+
 <dl class="dl-horizontal">
     <dt>
         @Html.LabelFor(model => model.LastName)
@@ -26,10 +36,10 @@
     @if (!string.IsNullOrWhiteSpace(Model.MiddleName))
     {
     <dt>
-        @Html.LabelFor(model => model.LastName)
+        @Html.LabelFor(model => model.MiddleName)
     </dt>
     <dd>
-        @Html.DisplayFor(model => model.LastName)
+        @Html.DisplayFor(model => model.MiddleName)
     </dd>
     }
 
@@ -74,15 +84,6 @@
         @Html.DisplayFor(model => model.RegistrationDate)
     </dd>
 </dl>
-
-@if (TempData["notEnoughBalance"] != null)
-{
-    <p class="text-danger">
-        Невозможно выполнить эту операцию!
-        <br />
-        Возможно данная услуга уже подключена сама или в другом пакете или недостаточный баланс
-    </p>
-}
 
 @foreach (var contractAddress in Model.ContractAddresses)
 {

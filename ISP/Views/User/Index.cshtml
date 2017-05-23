@@ -1,6 +1,16 @@
 ﻿@model ISP.DAL.DBModels.User
 @{
-    ViewBag.Title = "Панель управления";
+    ViewBag.Title = "Личный кабинет";
+}
+
+@if (TempData["PasswordChanged"] != null)
+{
+    <div class="alert alert-dismissible alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Поздравляем!</strong>
+        <br />
+        Вы успешно изменили свой пароль
+    </div>
 }
 
 <dl class="dl-horizontal">
@@ -20,12 +30,12 @@
 
     @if (!string.IsNullOrWhiteSpace(Model.MiddleName))
     {
-        <dt>
-            @Html.LabelFor(model => model.LastName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
+    <dt>
+        @Html.LabelFor(model => model.MiddleName)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.MiddleName)
+    </dd>
     }
 
     <dt>
@@ -37,22 +47,22 @@
 
     @if (!string.IsNullOrWhiteSpace(Model.PhoneNumber))
     {
-        <dt>
-            @Html.LabelFor(model => model.PhoneNumber)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
+    <dt>
+        @Html.LabelFor(model => model.PhoneNumber)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.PhoneNumber)
+    </dd>
     }
 
     @if (!string.IsNullOrWhiteSpace(Model.Email))
     {
-        <dt>
-            @Html.LabelFor(model => model.Email)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
+    <dt>
+        @Html.LabelFor(model => model.Email)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Email)
+    </dd>
     }
 
     <dt>
@@ -69,3 +79,6 @@
         @Html.DisplayFor(model => model.RegistrationDate)
     </dd>
 </dl>
+
+<br />
+@Html.ActionLink("Сменить пароль", "ChangePassword", "User", null, new { @class = "btn btn-block btn-warning" })

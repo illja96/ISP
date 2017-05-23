@@ -151,6 +151,10 @@ namespace ISP.BLL.ModelActions
             };
         }
 
+        public IdentityResult ChangePassowrd(string userId, string currentPassword, string newPassword)
+        {
+            return userManager.ChangePassword(userId, currentPassword, newPassword);
+        }
         public IdentityResult ConfirmEmail(string userId, string code)
         {
             return userManager.ConfirmEmail(userId, code);

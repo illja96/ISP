@@ -103,6 +103,7 @@
     <Compile Include="Repositories\TVChannelPackageRepository.cs" />
     <Compile Include="Repositories\TVChannelRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="ViewModels\ChangeUserPassword.cs" />
     <Compile Include="ViewModels\InternetPackageDetails.cs" />
     <Compile Include="ViewModels\TVChannelDetails.cs" />
     <Compile Include="ViewModels\TVChannelPackageDetails.cs" />

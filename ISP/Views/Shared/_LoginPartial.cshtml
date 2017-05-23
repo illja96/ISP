@@ -16,7 +16,7 @@
             }
             @if (User.IsInRole("Subscriber"))
             {
-                @Html.ActionLink("Личный кабинет", "Index", "Manage", null, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Личный кабинет", "Index", "User", null, new { @class = "btn btn-primary" })
             }
 
             <input type="submit" class="btn btn-warning" value="Выйти" />
