@@ -15,6 +15,7 @@ namespace ISP.Controllers
     public class UserController : Controller
     {
         private UserActions actions;
+        private ContractAddressActions contractAddressActions;
         private InternetPackageActions internetPackageActions;
         private TVChannelActions tvChannelActions;
         private TVChannelPackageActions tvChannelPackagesActions;
@@ -22,6 +23,7 @@ namespace ISP.Controllers
         public UserController()
         {
             actions = new UserActions();
+            contractAddressActions = new ContractAddressActions();
             internetPackageActions = new InternetPackageActions();
             tvChannelActions = new TVChannelActions();
             tvChannelPackagesActions = new TVChannelPackageActions();
@@ -31,6 +33,44 @@ namespace ISP.Controllers
         {
             User user = actions.GetById(User.Identity.GetUserId());
             return View(user);
+        }
+
+        public ActionResult DetailsInternetPackageContract(Guid contractAddressId)
+        {
+            ContractAddress contractAddress = contractAddressActions.Get(contractAddressId);
+            IEnumerable<InternetPackageContract> internetPackageContracts = contractAddress.InternetPackageContracts.OrderByDescending(item => item.Number).ToArray();
+
+            return PartialView(internetPackageContracts);
+        }
+        public ActionResult DetailsTVChannelContract(Guid contractAddressId)
+        {
+            ContractAddress contractAddress = contractAddressActions.Get(contractAddressId);
+            IEnumerable<TVChannelContract> tvChannelContracts = contractAddress.TVChannelContracts.OrderByDescending(item => item.Number).ToArray();
+
+            return PartialView(tvChannelContracts);
+        }
+        public ActionResult DetailsTVChannelPackageContract(Guid contractAddressId)
+        {
+            ContractAddress contractAddress = contractAddressActions.Get(contractAddressId);
+            IEnumerable<TVChannelPackageContract> tvChannelPackageContracts = contractAddress.TVChannelPackageContracts.OrderByDescending(item => item.Number).ToArray();
+
+            return PartialView(tvChannelPackageContracts);
+        }
+
+        public ActionResult TopUpBalance()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult TopUpBalance(double amount)
+        {
+            User user = actions.GetById(User.Identity.GetUserId());
+            user.Balance += amount;
+            actions.Edit(user);
+
+            return RedirectToAction("Index");
         }
 
         public ActionResult ChangePassword()

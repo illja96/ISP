@@ -80,5 +80,64 @@
     </dd>
 </dl>
 
+@foreach (var contractAddress in Model.ContractAddresses)
+{
+    string fullAddress = string.Format("{0} {1} {2} {3} {4} {5}", contractAddress.ZIP, contractAddress.Department, contractAddress.City, contractAddress.Street, contractAddress.House, contractAddress.Apartment);
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <button type="button" class="btn btn-info spoiler-trigger" data-toggle="collapse">@fullAddress</button>
+        </div>
+        <div class="panel-collapse collapse out">
+            <div class="panel-body">
+                @*InternetPackage*@
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <button type="button" class="btn btn-info spoiler-trigger" data-toggle="collapse">Пакеты интернет услуг</button>
+                    </div>
+                    <div class="panel-collapse collapse out">
+                        <div class="panel-body">
+                            @Html.Action("DetailsInternetPackageContract", new { @contractAddressId = contractAddress.Id })
+                        </div>
+                    </div>
+                </div>
+
+                @*TVChannel*@
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <button type="button" class="btn btn-info spoiler-trigger" data-toggle="collapse">ТВ каналы</button>
+                    </div>
+                    <div class="panel-collapse collapse out">
+                        <div class="panel-body">
+                            @Html.Action("DetailsTVChannelContract", new { @contractAddressId = contractAddress.Id })
+                        </div>
+                    </div>
+                </div>
+
+                @*TVChannelPackage*@
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <button type="button" class="btn btn-info spoiler-trigger" data-toggle="collapse">Пакеты ТВ каналов</button>
+                    </div>
+                    <div class="panel-collapse collapse out">
+                        <div class="panel-body">
+                            @Html.Action("DetailsTVChannelPackageContract", new { @contractAddressId = contractAddress.Id })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    $(".spoiler-trigger").click(function () {
+        $(this).parent().next().collapse('toggle');
+    });
+</script>
+
+<br />
+@Html.ActionLink("Пополнить счёт", "TopUpBalance", "User", null, new { @class = "btn btn-block btn-primary" })
+
 <br />
 @Html.ActionLink("Сменить пароль", "ChangePassword", "User", null, new { @class = "btn btn-block btn-warning" })

@@ -316,6 +316,10 @@
     <Content Include="Views\AdminUser\DetailsTVChannelPackageContract.cshtml" />
     <Content Include="Views\AdminUser\DetailsTVChannelContract.cshtml" />
     <Content Include="Views\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\User\DetailsTVChannelPackageContract.cshtml" />
+    <Content Include="Views\User\DetailsInternetPackageContract.cshtml" />
+    <Content Include="Views\User\DetailsTVChannelContract.cshtml" />
+    <Content Include="Views\User\TopUpBalance.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
